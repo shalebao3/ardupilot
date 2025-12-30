@@ -3,14 +3,14 @@
 #include <AP_Gripper/AP_Gripper.h>
 
 /*
- *  ArduPlane parameter definitions
+ *  ArduPlane 参数定义
  *
  */
 
 const AP_Param::Info Plane::var_info[] = {
     // @Param: FORMAT_VERSION
-    // @DisplayName: Eeprom format version number
-    // @Description: This value is incremented when changes are made to the eeprom format
+    // @DisplayName: EEPROM 格式版本号
+    // @Description: 当 EEPROM 格式发生变更时递增
     // @User: Advanced
     GSCALAR(format_version,         "FORMAT_VERSION", 0),
 
@@ -21,49 +21,49 @@ const AP_Param::Info Plane::var_info[] = {
     // AP_SerialManager was here
 
     // @Param: AUTOTUNE_LEVEL
-    // @DisplayName: Autotune level
-    // @Description: Level of aggressiveness of pitch and roll PID gains. Lower values result in a 'softer' tune. Level 6 recommended for most planes. A value of 0 means to keep the current values of RMAX and TCONST for the controllers, tuning only the PID values
+    // @DisplayName: 自动调参等级
+    // @Description: 俯仰与横滚 PID 增益的激进程度。数值越小调参越“柔和”。大多数机型推荐 6。为 0 表示保持控制器的 RMAX/TCONST，仅调整 PID 值
     // @Range: 0 10
     // @Increment: 1
     // @User: Standard
     ASCALAR(autotune_level, "AUTOTUNE_LEVEL",  6),
 
     // @Param: AUTOTUNE_OPTIONS
-    // @DisplayName: Autotune options bitmask
-    // @Description: Fixed Wing Autotune specific options. Useful on QuadPlanes with higher INS_GYRO_FILTER settings to prevent these filter values from being set too aggressively during Fixed Wing Autotune.
-    // @Bitmask: 0: Disable FLTD update by Autotune
-    // @Bitmask: 1: Disable FLTT update by Autotune
+    // @DisplayName: 自动调参选项位掩码
+    // @Description: 固定翼自动调参选项。在 QuadPlane 且 INS_GYRO_FILTER 较高时，可防止固定翼自动调参将滤波值设置过激。
+    // @Bitmask: 0: 禁止 Autotune 更新 FLTD
+    // @Bitmask: 1: 禁止 Autotune 更新 FLTT
     // @User: Advanced
     ASCALAR(autotune_options, "AUTOTUNE_OPTIONS",  0),
 
     // TELEM_DELAY was here
 
     // @Param: GCS_PID_MASK
-    // @DisplayName: GCS PID tuning mask
-    // @Description: bitmask of PIDs to send MAVLink PID_TUNING messages for
+    // @DisplayName: GCS PID 调参掩码
+    // @Description: 发送 MAVLink PID_TUNING 消息的 PID 位掩码
     // @User: Advanced
-    // @Bitmask: 0:Roll,1:Pitch,2:Yaw,3:Steering,4:Landing,5:AccZ
+    // @Bitmask: 0:横滚,1:俯仰,2:偏航,3:转向,4:降落,5:Z 轴加速度
     GSCALAR(gcs_pid_mask,           "GCS_PID_MASK",     0),
 
     // @Param: KFF_RDDRMIX
-    // @DisplayName: Rudder Mix
-    // @Description: Amount of rudder to add during aileron movement. Increase if nose initially yaws away from roll. Reduces adverse yaw.
+    // @DisplayName: 方向舵混控
+    // @Description: 副翼动作时增加的方向舵量。若机头初始偏航与横滚相反，可适当增大以减少不利偏航。
     // @Range: 0 1
     // @Increment: 0.01
     // @User: Standard
     GSCALAR(kff_rudder_mix,         "KFF_RDDRMIX",    RUDDER_MIX),
 
     // @Param: KFF_THR2PTCH
-    // @DisplayName: Throttle to Pitch Mix
-    // @Description: Pitch up to add in proportion to throttle. 100% throttle will add this number of degrees to the pitch target.
+    // @DisplayName: 油门到俯仰混控
+    // @Description: 按油门比例增加抬头俯仰角。100% 油门会在俯仰目标上增加该角度。
     // @Range: -5 5
     // @Increment: 0.01
     // @User: Advanced
     GSCALAR(kff_throttle_to_pitch,  "KFF_THR2PTCH",   0),
 
     // @Param: STAB_PITCH_DOWN
-    // @DisplayName: Low throttle pitch down trim 
-    // @Description: Degrees of down pitch added when throttle is below TRIM_THROTTLE in FBWA and AUTOTUNE modes. Scales linearly so full value is added when THR_MIN is reached. Helps to keep airspeed higher in glides or landing approaches and prevents accidental stalls. 2 degrees recommended for most planes.
+    // @DisplayName: 低油门俯仰下压配平
+    // @Description: 在 FBWA/AUTOTUNE 中油门低于 TRIM_THROTTLE 时添加下俯仰角。线性缩放至 THR_MIN 时达到全值，有助于保持滑翔/进近空速并避免失速。多数机型推荐 2 度。
     // @Range: 0 15
     // @Increment: 0.1
     // @Units: deg
@@ -71,8 +71,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(stab_pitch_down, "STAB_PITCH_DOWN",   2.0f),
 
     // @Param: ALT_SLOPE_MIN
-    // @DisplayName: Altitude slope minimum
-    // @Description: This controls the minimum altitude change for a waypoint before an altitude slope will be used instead of an immediate altitude change. The default value is 15 meters, which helps to smooth out waypoint missions where small altitude changes happen near waypoints. If you don't want altitude slopes to be used in missions then you can set this to zero, which will disable altitude slope calculations. Otherwise you can set it to a minimum number of meters of altitude error to the destination waypoint before an altitude slope will be used to change altitude.
+    // @DisplayName: 高度坡度最小值
+    // @Description: 该值决定在航点高度变化达到多少时采用高度坡度而非立即变高。默认 15m 用于平滑航点附近的小幅高度变化。设为 0 则禁用高度坡度，否则表示触发坡度所需的最小高度误差（m）。
     // @Range: 0 1000
     // @Increment: 1
     // @Units: m
@@ -80,8 +80,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(alt_slope_min, "ALT_SLOPE_MIN", 15),
 
     // @Param: ALT_SLOPE_MAXHGT
-    // @DisplayName: Altitude slope maximum height
-    // @Description: This controls the height above the altitude slope the plane may be before rebuilding it. This is useful for smoothing out an auto-takeoff.
+    // @DisplayName: 高度坡度最大高度
+    // @Description: 飞机可偏离高度坡度的最大高度，超过则重建坡度。用于平滑自动起飞。
     // @Range: 0 100
     // @Increment: 1
     // @Units: m
@@ -89,15 +89,15 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(alt_slope_max_height, "ALT_SLOPE_MAXHGT", 5.0),
 
     // @Param: STICK_MIXING
-    // @DisplayName: Stick Mixing
-    // @Description: When enabled, this adds user stick input to the control surfaces in auto modes, allowing the user to have some degree of flight control without changing modes. There are 3 types of stick mixing available. If you set STICK_MIXING to 1 or 4 then it will use "fly by wire" mixing. 4 will provide roll and yaw control, while 1 also provides FBW-A style pitch control. If you set STICK_MIXING to 3 then it will apply to the yaw while in quadplane modes only, such as while doing an automatic VTOL takeoff or landing. WARNING: FBW-A pitch control does not offer flight envelope protections. Prolonged pitch inputs in mode 1 can result in a stall or overspeed condition, and should be avoided.
-    // @Values: 0:Disabled,1:FBW style,3:VTOL Yaw only,4:FBW style (no pitch)
+    // @DisplayName: 摇杆混控
+    // @Description: 启用后在自动模式下将用户摇杆输入叠加到舵面，允许不切模式的有限人工控制。支持 3 种混控：1/4 为电传式混控，4 提供横滚+偏航，1 还提供 FBW-A 俯仰控制；3 仅在 QuadPlane 模式下作用于偏航（如 VTOL 自动起降）。警告：FBW-A 俯仰不含包线保护，模式 1 长时间俯仰输入可能失速或超速。
+    // @Values: 0:禁用,1:FBW 风格,3:仅 VTOL 偏航,4:FBW 风格（无俯仰）
     // @User: Advanced
     GSCALAR(stick_mixing,           "STICK_MIXING",   uint8_t(StickMixing::FBW)),
 
     // @Param: TKOFF_THR_MINSPD
-    // @DisplayName: Takeoff throttle min speed
-    // @Description: Minimum GPS ground speed in m/s used by the speed check that un-suppresses throttle in auto-takeoff. This can be be used for catapult launches where you want the motor to engage only after the plane leaves the catapult, but it is preferable to use the TKOFF_THR_MINACC and TKOFF_THR_DELAY parameters for catapult launches due to the errors associated with GPS measurements. For hand launches with a pusher prop it is strongly advised that this parameter be set to a value no less than 4 m/s to provide additional protection against premature motor start. Note that the GPS velocity will lag the real velocity by about 0.5 seconds. The ground speed check is delayed by the TKOFF_THR_DELAY parameter.
+    // @DisplayName: 起飞油门最小速度
+    // @Description: 自动起飞中解除油门抑制的速度检查所用的最小 GPS 地速（m/s）。可用于弹射起飞以确保离开弹射器后再启机，但考虑 GPS 测量误差，更推荐使用 TKOFF_THR_MINACC 与 TKOFF_THR_DELAY。对后推式手抛起飞，建议该值不低于 4 m/s，以避免电机过早启动。注意 GPS 速度会滞后真实速度约 0.5 秒。地速检查由 TKOFF_THR_DELAY 参数延迟。
     // @Units: m/s
     // @Range: 0 30
     // @Increment: 0.1
@@ -105,8 +105,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_throttle_min_speed,     "TKOFF_THR_MINSPD",  0),
 
     // @Param: TKOFF_THR_MINACC
-    // @DisplayName: Takeoff throttle min acceleration
-    // @Description: Minimum forward acceleration in m/s/s before arming the ground speed check in auto-takeoff. This is meant to be used for hand launches. Setting this value to 0 disables the acceleration test which means the ground speed check will always be armed which could allow GPS velocity jumps to start the engine. For hand launches and bungee launches this should be set to around 15. Also see TKOFF_ACCEL_CNT parameter for control of full "shake to arm".
+    // @DisplayName: 起飞油门最小加速度
+    // @Description: 自动起飞中启用地速检查前所需的最小前向加速度（m/s/s），用于手抛起飞。设为 0 将禁用加速度检测，使地速检查始终启用，可能因 GPS 速度跳变而启动电机。手抛与弹弓起飞建议设为约 15。另见 TKOFF_ACCEL_CNT 用于完整“晃动解锁”控制。
     // @Units: m/s/s
     // @Range: 0 30
     // @Increment: 0.1
@@ -114,8 +114,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_throttle_min_accel,     "TKOFF_THR_MINACC",  0),
 
     // @Param: TKOFF_THR_DELAY
-    // @DisplayName: Takeoff throttle delay
-    // @Description: This parameter sets the time delay (in 1/10ths of a second) that the ground speed check is delayed after the forward acceleration check controlled by TKOFF_THR_MINACC has passed. For hand launches with pusher propellers it is essential that this is set to a value of no less than 2 (0.2 seconds) to ensure that the aircraft is safely clear of the throwers arm before the motor can start. For bungee launches a larger value can be used (such as 30) to give time for the bungee to release from the aircraft before the motor is started.
+    // @DisplayName: 起飞油门延迟
+    // @Description: 在 TKOFF_THR_MINACC 通过后，地速检查延迟的时间（1/10 秒）。对后推式手抛起飞，该值必须不小于 2（0.2 秒），以确保机体离手后电机才启动。弹弓起飞可用更大值（如 30），给弹弓释放留出时间。
     // @Units: ds
     // @Range: 0 127
     // @Increment: 1
@@ -123,8 +123,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_throttle_delay,     "TKOFF_THR_DELAY",  2),
 
     // @Param: TKOFF_THR_MAX_T
-    // @DisplayName: Takeoff throttle maximum time
-    // @Description: This sets the time that maximum throttle will be forced during a fixed wing takeoff.
+    // @DisplayName: 起飞最大油门时间
+    // @Description: 固定翼起飞阶段强制最大油门的持续时间。
     // @Units: s
     // @Range: 0 10
     // @Increment: 0.5
@@ -132,8 +132,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(takeoff_throttle_max_t,     "TKOFF_THR_MAX_T",  4),
 
     // @Param: TKOFF_THR_MIN
-    // @DisplayName: Takeoff minimum throttle
-    // @Description: The minimum throttle to use in takeoffs in AUTO and TAKEOFF flight modes, when TKOFF_OPTIONS bit 0 is set. Also, the minimum throttle to use in a quadpane forward transition. This can be useful to ensure faster takeoffs or transitions on aircraft where the normal throttle control leads to a slow takeoff or transition. It is used when it is larger than THR_MIN, otherwise THR_MIN is used instead.
+    // @DisplayName: 起飞最低油门
+    // @Description: 当 TKOFF_OPTIONS 置位 0 位时，在 AUTO/TAKEOFF 起飞所用的最小油门；也用于 QuadPlane 前向转换的最小油门。对正常油门控制导致起飞/转换较慢的机型有帮助。当该值大于 THR_MIN 时使用，否则使用 THR_MIN。
     // @Units: %
     // @Range: 0 100
     // @Increment: 1
@@ -141,8 +141,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(takeoff_throttle_min,       "TKOFF_THR_MIN",    0),
 
     // @Param: TKOFF_THR_IDLE
-    // @DisplayName: Takeoff idle throttle
-    // @Description: The idle throttle to hold after arming and before a takeoff. Applicable in TAKEOFF and AUTO modes.
+    // @DisplayName: 起飞怠速油门
+    // @Description: 解锁后、起飞前保持的怠速油门，适用于 TAKEOFF 与 AUTO 模式。
     // @Units: %
     // @Range: 0 100
     // @Increment: 1
@@ -150,15 +150,15 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(takeoff_throttle_idle,       "TKOFF_THR_IDLE",    0),
 
     // @Param: TKOFF_OPTIONS
-    // @DisplayName: Takeoff options
-    // @Description: This selects the mode of the takeoff in AUTO and TAKEOFF flight modes. 
-    // @Bitmask: 0: When unset the maximum allowed throttle is always used (THR_MAX or TKOFF_THR_MAX) during takeoff. When set TECS is allowed to operate between a minimum (THR_MIN or TKOFF_THR_MIN) and a maximum (THR_MAX or TKOFF_THR_MAX) limit. Applicable only when using an airspeed sensor.
+    // @DisplayName: 起飞选项
+    // @Description: 选择 AUTO 与 TAKEOFF 模式下的起飞方式。
+    // @Bitmask: 0: 未置位时起飞始终使用最大油门（THR_MAX 或 TKOFF_THR_MAX）；置位后 TECS 可在最小（THR_MIN 或 TKOFF_THR_MIN）与最大（THR_MAX 或 TKOFF_THR_MAX）之间工作，仅在使用空速传感器时生效。
     // @User: Advanced
     ASCALAR(takeoff_options,               "TKOFF_OPTIONS",       0),
     
     // @Param: TKOFF_TDRAG_ELEV
-    // @DisplayName: Takeoff tail dragger elevator
-    // @Description: This parameter sets the amount of elevator to apply during the initial stage of a takeoff. It is used to hold the tail wheel of a taildragger on the ground during the initial takeoff stage to give maximum steering. This option should be combined with the TKOFF_TDRAG_SPD1 option and the GROUND_STEER_ALT option along with tuning of the ground steering controller. A value of zero means to bypass the initial "tail hold" stage of takeoff. Set to zero for hand and catapult launch. For tail-draggers you should normally set this to 100, meaning full up elevator during the initial stage of takeoff. For most tricycle undercarriage aircraft a value of zero will work well, but for some tricycle aircraft a small negative value (say around -20 to -30) will apply down elevator which will hold the nose wheel firmly on the ground during initial acceleration. Only use a negative value if you find that the nosewheel doesn't grip well during takeoff. Too much down elevator on a tricycle undercarriage may cause instability in steering as the plane pivots around the nosewheel. Add down elevator 10 percent at a time.
+    // @DisplayName: 起飞尾轮机升降舵
+    // @Description: 设置起飞初期施加的升降舵量。用于将尾轮机尾轮压地，以获得最大地面转向。应与 TKOFF_TDRAG_SPD1、GROUND_STEER_ALT 及地面转向控制器调参配合。设为 0 表示跳过“压尾”阶段；手抛与弹射起飞应设为 0。尾轮机通常设为 100（起飞初期全上升舵）。大多数前三点起落架机型设为 0 即可；部分机型可设小负值（约 -20~-30）以压住前轮。仅在前轮抓地不足时使用负值，过大的下俯可能导致转向不稳，建议每次增加 10% 调整。
     // @Units: %
     // @Range: -100 100
     // @Increment: 1
@@ -166,8 +166,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_tdrag_elevator,     "TKOFF_TDRAG_ELEV",  0),
 
     // @Param: TKOFF_TDRAG_SPD1
-    // @DisplayName: Takeoff tail dragger speed1
-    // @Description: This parameter sets the airspeed at which to stop holding the tail down and transition to rudder control of steering on the ground. When TKOFF_TDRAG_SPD1 is reached the pitch of the aircraft will be held level until TKOFF_ROTATE_SPD is reached, at which point the takeoff pitch specified in the mission will be used to "rotate" the pitch for takeoff climb. Set TKOFF_TDRAG_SPD1 to zero to go straight to rotation. This should be set to zero for hand launch and catapult launch. It should also be set to zero for tricycle undercarriages unless you are using the method above to gently hold the nose wheel down. For tail dragger aircraft it should be set just below the stall speed.
+    // @DisplayName: 起飞尾轮机速度1
+    // @Description: 设置停止压尾并转入方向舵地面转向控制的空速。当达到 TKOFF_TDRAG_SPD1 时，飞机俯仰保持水平直至达到 TKOFF_ROTATE_SPD，此时使用任务中指定的起飞俯仰“抬机头”爬升。设为 0 则直接进入抬机头阶段。手抛与弹射起飞应设为 0。前三点起落架机型也应设为 0，除非采用轻微压前轮的方式。尾轮机应设在略低于失速速度处。
     // @Units: m/s
     // @Range: 0 30
     // @Increment: 0.1
@@ -175,8 +175,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_tdrag_speed1,     "TKOFF_TDRAG_SPD1",  0),
 
     // @Param: TKOFF_ROTATE_SPD
-    // @DisplayName: Takeoff rotate speed
-    // @Description: This parameter sets the airspeed at which the aircraft will "rotate", setting climb pitch specified in the mission. If TKOFF_ROTATE_SPD is zero then the climb pitch will be used as soon as takeoff is started. For hand launch and catapult launches a TKOFF_ROTATE_SPD of zero should be set. For all ground launches TKOFF_ROTATE_SPD should be set above the stall speed, usually by about 10 to 30 percent. During the run, use TKOFF_GND_PITCH to keep the aircraft on the runway while below this airspeed.
+    // @DisplayName: 起飞抬机头速度
+    // @Description: 设定飞机开始“抬机头”并使用任务爬升俯仰的空速。若为 0，则起飞开始即使用爬升俯仰。手抛与弹射起飞应设为 0。地面起飞应设在失速速度以上，通常高出 10%-30%。滑跑期间可用 TKOFF_GND_PITCH 在该空速以下保持机体贴地。
     // @Units: m/s
     // @Range: 0 30
     // @Increment: 0.1
@@ -184,8 +184,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_rotate_speed,     "TKOFF_ROTATE_SPD",  0),
 
     // @Param: TKOFF_THR_SLEW
-    // @DisplayName: Takeoff throttle slew rate
-    // @Description: This parameter sets the slew rate for the throttle during auto takeoff. When this is zero the THR_SLEWRATE parameter is used during takeoff. For rolling takeoffs it can be a good idea to set a lower slewrate for takeoff to give a slower acceleration which can improve ground steering control. The value is a percentage throttle change per second, so a value of 20 means to advance the throttle over 5 seconds on takeoff. Values below 20 are not recommended as they may cause the plane to try to climb out with too little throttle. A value of -1 means no limit on slew rate in takeoff.
+    // @DisplayName: 起飞油门斜率
+    // @Description: 自动起飞期间的油门斜率。为 0 时使用 THR_SLEWRATE。滚行起飞可适当降低斜率以减缓加速并改善地面转向。该值为每秒油门百分比变化量，例如 20 表示 5 秒内推至目标油门。不建议低于 20，可能导致油门不足而提前爬升。-1 表示起飞不限制斜率。
     // @Units: %/s
     // @Range: -1 127
     // @Increment: 1
@@ -193,8 +193,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_throttle_slewrate, "TKOFF_THR_SLEW",  0),
 
     // @Param: TKOFF_PLIM_SEC
-    // @DisplayName: Takeoff pitch limit reduction
-    // @Description: This parameter reduces the pitch minimum limit of an auto-takeoff just a few seconds before it reaches the target altitude. This reduces overshoot by allowing the flight controller to start leveling off a few seconds before reaching the target height. When set to zero, the mission pitch min is enforced all the way to and through the target altitude, otherwise the pitch min slowly reduces to zero in the final segment. This is the pitch_min, not the demand. The flight controller should still be commanding to gain altitude to finish the takeoff but with this param it is not forcing it higher than it wants to be.
+    // @DisplayName: 起飞俯仰限幅衰减
+    // @Description: 在接近目标高度前数秒降低自动起飞的最小俯仰限制，使飞控提前开始拉平以减少超调。设为 0 表示在到达并穿过目标高度前都强制任务俯仰最小值；否则在最后阶段逐步降为 0。该值作用于 pitch_min 而非俯仰需求，飞控仍会指令爬升，只是不再强制更高俯仰。
     // @Units: s
     // @Range: 0 10
     // @Increment: 0.5
@@ -202,8 +202,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_pitch_limit_reduction_sec, "TKOFF_PLIM_SEC",  2),
 
     // @Param: TKOFF_FLAP_PCNT
-    // @DisplayName: Takeoff flap percentage
-    // @Description: The amount of flaps (as a percentage) to apply in automatic takeoff
+    // @DisplayName: 起飞襟翼百分比
+    // @Description: 自动起飞时施加的襟翼量（百分比）
     // @Range: 0 100
     // @Units: %
     // @Increment: 1
@@ -211,8 +211,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(takeoff_flap_percent,     "TKOFF_FLAP_PCNT", 0),
 
     // @Param: LEVEL_ROLL_LIMIT
-    // @DisplayName: Level flight roll limit
-    // @Description: This controls the maximum bank angle in degrees during flight modes where level flight is desired, such as in the final stages of landing, and during auto takeoff. This should be a small angle (such as 5 degrees) to prevent a wing hitting the runway during takeoff or landing. Setting this to zero will completely disable heading hold on auto takeoff while below 5 meters and during the flare portion of a final landing approach.
+    // @DisplayName: 平飞横滚限制
+    // @Description: 在需要平飞的模式（如降落末段、自动起飞）中限制最大倾斜角。该值应较小（如 5 度）以避免起降时机翼触地。设为 0 会在自动起飞 5 米以下及最终进近拉平段完全禁用航向保持。
     // @Units: deg
     // @Range: 0 45
     // @Increment: 1
@@ -220,15 +220,15 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(level_roll_limit,              "LEVEL_ROLL_LIMIT",   5),
 
     // @Param: USE_REV_THRUST
-    // @DisplayName: Bitmask for when to allow negative reverse thrust
-    // @Description: This controls when to use reverse thrust. If set to a non-zero value then the bits correspond to flight stages where reverse thrust may be used. The most commonly used value for USE_REV_THRUST is 2, which means AUTO_LAND only. That enables reverse thrust in the landing stage of AUTO mode. Another common choice is 1, which means to use reverse thrust in all auto flight stages. Reverse thrust is always used in MANUAL mode if enabled with THR_MIN < 0. In non-autothrottle controlled modes, if reverse thrust is not used, then THR_MIN is effectively set to 0 for that mode.
+    // @DisplayName: 允许反推的阶段位掩码
+    // @Description: 控制何时使用反推。设为非零时，每一位对应可使用反推的飞行阶段。常用值为 2（仅 AUTO_LAND），即仅在 AUTO 降落阶段启用反推；另一个常用值为 1（所有自动飞行阶段）。若 THR_MIN < 0，MANUAL 模式下始终可反推。非自动油门模式下若不使用反推，该模式的 THR_MIN 等效为 0。
     // @Bitmask: 0:AUTO_ALWAYS,1:AUTO_LAND,2:AUTO_LOITER_TO_ALT,3:AUTO_LOITER_ALL,4:AUTO_WAYPOINTS,5:LOITER,6:RTL,7:CIRCLE,8:CRUISE,9:FBWB,10:GUIDED,11:AUTO_LANDING_PATTERN,12:FBWA,13:ACRO,14:STABILIZE,15:THERMAL
     // @User: Advanced
     GSCALAR(use_reverse_thrust,     "USE_REV_THRUST",  float(UseReverseThrust::AUTO_LAND_APPROACH)),
 
     // @Param: ALT_OFFSET
-    // @DisplayName: Altitude offset
-    // @Description: This is added to the target altitude in automatic flight. It can be used to add a global altitude offset to a mission
+    // @DisplayName: 高度偏移
+    // @Description: 自动飞行中加到目标高度上的全局偏移，可用于给任务增加统一高度偏置
     // @Units: m
     // @Range: -32767 32767
     // @Increment: 1
@@ -236,8 +236,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(alt_offset, "ALT_OFFSET",                 0),
 
     // @Param: WP_RADIUS
-    // @DisplayName: Waypoint Radius
-    // @Description: Defines the maximum distance from a waypoint that when crossed indicates the waypoint may be complete. To avoid the aircraft looping around the waypoint in case it misses by more than the WP_RADIUS an additional check is made to see if the aircraft has crossed a "finish line" passing through the waypoint and perpendicular to the flight path from the previous waypoint. If that finish line is crossed then the waypoint is considered complete. Note that the navigation controller may decide to turn later than WP_RADIUS before a waypoint, based on how sharp the turn is and the speed of the aircraft. It is safe to set WP_RADIUS much larger than the usual turn radius of your aircraft and the navigation controller will work out when to turn. If you set WP_RADIUS too small then you will tend to overshoot the turns.
+    // @DisplayName: 航点半径
+    // @Description: 设定判定航点完成的最大距离。为避免飞机偏离超过 WP_RADIUS 时绕圈，会额外检查是否穿越过“终止线”（过航点且垂直于上一航段）。若穿越则判定完成。导航控制器可能根据转弯角度与速度在距航点大于 WP_RADIUS 时才转弯。WP_RADIUS 可设得大于机体常规转弯半径，控制器会自行计算转弯时机；过小则易转弯过冲。
     // @Units: m
     // @Range: 1 32767
     // @Increment: 1
@@ -245,8 +245,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(waypoint_radius,        "WP_RADIUS",      WP_RADIUS_DEFAULT),
 
     // @Param: WP_MAX_RADIUS
-    // @DisplayName: Waypoint Maximum Radius
-    // @Description: Sets the maximum distance to a waypoint for the waypoint to be considered complete. This overrides the "cross the finish line" logic that is normally used to consider a waypoint complete. For normal AUTO behaviour this parameter should be set to zero. Using a non-zero value is only recommended when it is critical that the aircraft does approach within the given radius, and should loop around until it has done so. This can cause the aircraft to loop forever if its turn radius is greater than the maximum radius set.
+    // @DisplayName: 航点最大半径
+    // @Description: 设定航点判定完成的最大距离，覆盖默认“穿越终止线”逻辑。正常 AUTO 行为应设为 0。仅在必须接近到指定半径时才建议设为非零，飞机会绕圈直至进入半径；若机体转弯半径大于该值，可能导致无限绕圈。
     // @Units: m
     // @Range: 0 32767
     // @Increment: 1
@@ -254,8 +254,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(waypoint_max_radius,        "WP_MAX_RADIUS",      0),
 
     // @Param: WP_LOITER_RAD
-    // @DisplayName: Waypoint Loiter Radius
-    // @Description: Defines the distance from the waypoint center, the plane will maintain during a loiter. If you set this value to a negative number then the default loiter direction will be counter-clockwise instead of clockwise. If this value is too close to zero, the achieved loiter radius will be determined by ROLL_LIMIT_DEG.
+    // @DisplayName: 航点盘旋半径
+    // @Description: 盘旋时保持的半径距离。设为负数表示默认盘旋方向为逆时针；设为接近 0 时，实际盘旋半径由 ROLL_LIMIT_DEG 决定。
     // @Units: m
     // @Range: -32767 32767
     // @Increment: 1
@@ -263,8 +263,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(loiter_radius,          "WP_LOITER_RAD",  LOITER_RADIUS_DEFAULT),
 
     // @Param: RTL_RADIUS
-    // @DisplayName: RTL loiter radius
-    // @Description: Defines the radius of the loiter circle when in RTL mode. If this is zero then WP_LOITER_RAD is used. If the radius is negative then a counter-clockwise is used. If positive then a clockwise loiter is used. For quadplanes with Q_RTL_MODE set to 1 (Enabled), this value is used to set the minimum radius at which the plane will transition from fixed-wing to VTOL mode for landing.
+    // @DisplayName: RTL 盘旋半径
+    // @Description: RTL 模式下的盘旋半径。为 0 则使用 WP_LOITER_RAD。负值为逆时针，正值为顺时针。对 Q_RTL_MODE=1 的 QuadPlane，该值用于设定固定翼转 VTOL 降落的最小半径。
     // @Units: m
     // @Range: -32767 32767
     // @Increment: 1
@@ -272,22 +272,22 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(rtl_radius,             "RTL_RADIUS",  0),
     
     // @Param: STALL_PREVENTION
-    // @DisplayName: Enable stall prevention
-    // @Description: Enables roll limits at low airspeed in roll limiting flight modes. Roll limits based on aerodynamic load factor in turns and scale on AIRSPEED_MIN that must be set correctly. Without airspeed sensor, uses synthetic airspeed from wind speed estimate that may both be inaccurate.
-    // @Values: 0:Disabled,1:Enabled
+    // @DisplayName: 启用失速保护
+    // @Description: 在限滚模式的低空速下启用横滚限制。限制基于转弯气动载荷因子，并随 AIRSPEED_MIN 变化，需正确设置。无空速传感器时使用基于风速估计的合成空速，可能存在误差。
+    // @Values: 0:禁用,1:启用
     // @User: Standard
     ASCALAR(stall_prevention, "STALL_PREVENTION",  1),
 
     // @Param: AIRSPEED_CRUISE
-    // @DisplayName: Target cruise airspeed
-    // @Description: Target cruise airspeed in m/s in automatic throttle modes. Value is as an indicated (calibrated/apparent) airspeed.
+    // @DisplayName: 目标巡航空速
+    // @Description: 自动油门模式下的目标巡航空速（m/s），为指示/校准空速。
     // @Units: m/s
     // @User: Standard
     ASCALAR(airspeed_cruise,     "AIRSPEED_CRUISE",  AIRSPEED_CRUISE),
 
     // @Param: AIRSPEED_MIN
-    // @DisplayName: Minimum Airspeed
-    // @Description: Minimum airspeed demanded in automatic throttle modes. Should be set to 20% higher than level flight stall speed.
+    // @DisplayName: 最小空速
+    // @Description: 自动油门模式下的最小空速需求，应设为平飞失速速度的 1.2 倍左右。
     // @Units: m/s
     // @Range: 5 100
     // @Increment: 1
@@ -295,8 +295,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(airspeed_min, "AIRSPEED_MIN",  AIRSPEED_FBW_MIN),
 
     // @Param: AIRSPEED_MAX
-    // @DisplayName: Maximum Airspeed
-    // @Description: Maximum airspeed demanded in automatic throttle modes. Should be set slightly less than level flight speed at THR_MAX and also at least 50% above AIRSPEED_MIN to allow for accurate TECS altitude control.
+    // @DisplayName: 最大空速
+    // @Description: 自动油门模式下的最大空速需求，应略小于 THR_MAX 平飞速度，并至少比 AIRSPEED_MIN 高 50%，以保证 TECS 高度控制精度。
     // @Units: m/s
     // @Range: 5 100
     // @Increment: 1
@@ -304,31 +304,31 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(airspeed_max, "AIRSPEED_MAX",  AIRSPEED_FBW_MAX),
 
     // @Param: AIRSPEED_STALL
-    // @DisplayName: Stall airspeed
-    // @Description: If stall prevention is enabled this speed is used to calculate the minimum airspeed while banking. It is also used during landing final as the minimum airspeed that can be demanded by the TECS, which allows using TECS_LAND_ARSPD or LAND_PF_ARSPD to achieve landings slower than AIRSPEED_MIN. If this is set to 0 then the stall speed is assumed to be the minimum airspeed speed. Typically set slightly higher then true stall speed.
+    // @DisplayName: 失速空速
+    // @Description: 启用失速保护时，用于计算转弯时的最小空速。也用于降落末段作为 TECS 可请求的最小空速，使 TECS_LAND_ARSPD 或 LAND_PF_ARSPD 可实现低于 AIRSPEED_MIN 的着陆空速。设为 0 则假定该值等于最小空速。通常设置略高于真实失速速度。
     // @Units: m/s
     // @Range: 5 75
     // @User: Standard
     ASCALAR(airspeed_stall, "AIRSPEED_STALL", 0),
 
     // @Param: FBWB_ELEV_REV
-    // @DisplayName: Fly By Wire elevator reverse
-    // @Description: Reverse sense of elevator in FBWB and CRUISE modes. When set to 0 up elevator (pulling back on the stick) means to raise altitude. When set to 1, up elevator means to lower altitude.
-    // @Values: 0:Disabled,1:Enabled
+    // @DisplayName: FBW 升降舵反向
+    // @Description: 在 FBWB 与 CRUISE 模式下反转升降舵方向。设为 0 时拉杆抬升高度；设为 1 时拉杆降低高度。
+    // @Values: 0:禁用,1:启用
     // @User: Standard
     GSCALAR(flybywire_elev_reverse, "FBWB_ELEV_REV",  0),
 
 #if AP_TERRAIN_AVAILABLE
     // @Param: TERRAIN_FOLLOW
-    // @DisplayName: Use terrain following
-    // @Description: This enables terrain following for CRUISE mode, FBWB mode, RTL and for rally points. To use this option you also need to set TERRAIN_ENABLE to 1, which enables terrain data fetching from the GCS, and you need to have a GCS that supports sending terrain data to the aircraft. When terrain following is enabled then CRUISE and FBWB mode will hold height above terrain rather than height above home. In RTL the return to launch altitude will be considered to be a height above the terrain. Rally point altitudes will be taken as height above the terrain. This option does not affect mission items, which have a per-waypoint flag for whether they are height above home or height above the terrain. To use terrain following missions you need a ground station which can set the waypoint type to be a terrain height waypoint when creating the mission.
-    // @Bitmask: 0: Enable all modes, 1:FBWB, 2:Cruise, 3:Auto, 4:RTL, 5:Avoid_ADSB, 6:Guided, 7:Loiter, 8:Circle, 9:QRTL, 10:QLand, 11:Qloiter, 12:AUTOLAND
+    // @DisplayName: 启用地形跟随
+    // @Description: 在 CRUISE、FBWB、RTL 与备降点启用地形跟随。需同时设置 TERRAIN_ENABLE=1 并由地面站提供地形数据。启用后 CRUISE/FBWB 将保持相对地形高度；RTL 的返航高度也按地形高度计算；备降点高度同样以地形为基准。该选项不影响任务航点（每个航点可单独选择相对 Home 或相对地形）。使用地形跟随任务需要地面站在创建任务时将航点类型设为地形高度。
+    // @Bitmask: 0:启用所有模式, 1:FBWB, 2:Cruise, 3:Auto, 4:RTL, 5:Avoid_ADSB, 6:Guided, 7:Loiter, 8:Circle, 9:QRTL, 10:QLand, 11:Qloiter, 12:AUTOLAND
     // @User: Standard
     GSCALAR(terrain_follow, "TERRAIN_FOLLOW",  0),
 
     // @Param: TERRAIN_LOOKAHD
-    // @DisplayName: Terrain lookahead
-    // @Description: This controls how far ahead the terrain following code looks to ensure it stays above upcoming terrain. A value of zero means no lookahead, so the controller will track only the terrain directly below the aircraft. The lookahead will never extend beyond the next waypoint when in AUTO mode.
+    // @DisplayName: 地形前视距离
+    // @Description: 控制地形跟随向前看的距离，以确保高于前方地形。设为 0 表示不前视，仅跟踪正下方地形。在 AUTO 模式下前视距离不会超过下一个航点。
     // @Range: 0 10000
     // @Units: m
     // @User: Standard
@@ -336,8 +336,8 @@ const AP_Param::Info Plane::var_info[] = {
 #endif
 
     // @Param: FBWB_CLIMB_RATE
-    // @DisplayName: Fly By Wire B altitude change rate
-    // @Description: This sets the rate in m/s at which FBWB and CRUISE modes will change its target altitude for full elevator deflection. Note that the actual climb rate of the aircraft can be lower than this, depending on your airspeed and throttle control settings. If you have this parameter set to the default value of 2.0, then holding the elevator at maximum deflection for 10 seconds would change the target altitude by 20 meters.
+    // @DisplayName: FBW-B 高度变化率
+    // @Description: FBWB/CRUISE 模式中满升降舵偏转时目标高度变化率（m/s）。实际爬升率可能受空速与油门控制限制而低于该值。若设为默认 2.0，则满偏 10 秒目标高度变化 20 米。
     // @Range: 1 10
     // @Units: m/s
 	// @Increment: 0.1
@@ -345,8 +345,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(flybywire_climb_rate, "FBWB_CLIMB_RATE",  2.0f),
 
     // @Param: THR_MIN
-    // @DisplayName: Minimum Throttle
-    // @Description: Minimum throttle percentage used in all modes except manual, provided THR_PASS_STAB is not set. Negative values allow reverse thrust if hardware supports it.
+    // @DisplayName: 最小油门
+    // @Description: 在非 MANUAL 模式且未设置 THR_PASS_STAB 时的最小油门百分比。硬件支持时允许负值用于反推。
     // @Units: %
     // @Range: -100 100
     // @Increment: 1
@@ -354,8 +354,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(throttle_min,           "THR_MIN",        THROTTLE_MIN),
 
     // @Param: THR_MAX
-    // @DisplayName: Maximum Throttle
-    // @Description: Maximum throttle percentage used in all modes except manual, provided THR_PASS_STAB is not set.
+    // @DisplayName: 最大油门
+    // @Description: 在非 MANUAL 模式且未设置 THR_PASS_STAB 时的最大油门百分比。
     // @Units: %
     // @Range: 0 100
     // @Increment: 1
@@ -363,8 +363,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(throttle_max,           "THR_MAX",        THROTTLE_MAX),
 
     // @Param: TKOFF_THR_MAX
-    // @DisplayName: Maximum Throttle for takeoff
-    // @Description: The maximum throttle setting during automatic takeoff. If this is zero then THR_MAX is used for takeoff as well.
+    // @DisplayName: 起飞最大油门
+    // @Description: 自动起飞时允许的最大油门。设为 0 则起飞时也使用 THR_MAX。
     // @Units: %
     // @Range: 0 100
     // @Increment: 1
@@ -372,8 +372,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(takeoff_throttle_max,   "TKOFF_THR_MAX",        0),
 
     // @Param: THR_SLEWRATE
-    // @DisplayName: Throttle slew rate
-    // @Description: Maximum change in throttle percentage per second. Lower limit  based on 1 microsend of servo increase per loop. Divide SCHED_LOOP_RATE by approximately 10 to determine minimum achievable value.
+    // @DisplayName: 油门斜率
+    // @Description: 每秒油门百分比最大变化量。下限受每循环舵机 1 微秒增量限制，可用 SCHED_LOOP_RATE 约除以 10 估算最小可达值。
     // @Units: %/s
     // @Range: 0 127
     // @Increment: 1
@@ -381,8 +381,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(throttle_slewrate,      "THR_SLEWRATE",   100),
 
     // @Param: FLAP_SLEWRATE
-    // @DisplayName: Flap slew rate
-    // @Description: maximum percentage change in flap output per second. A setting of 25 means to not change the flap by more than 25% of the full flap range in one second. A value of 0 means no rate limiting.
+    // @DisplayName: 襟翼斜率
+    // @Description: 每秒襟翼输出的最大百分比变化。设为 25 表示 1 秒内不超过全行程的 25%。设为 0 表示不限制速度。
     // @Units: %/s
     // @Range: 0 100
     // @Increment: 1
@@ -390,38 +390,38 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(flap_slewrate,          "FLAP_SLEWRATE",   75),
 
     // @Param: THR_SUPP_MAN
-    // @DisplayName: Throttle suppress manual passthru
-    // @Description: When throttle is suppressed in auto mode it is normally forced to zero. If you enable this option, then while suppressed it will be manual throttle. This is useful on petrol engines to hold the idle throttle manually while waiting for takeoff
-	// @Values: 0:Disabled,1:Enabled
+    // @DisplayName: 油门抑制手动直通
+    // @Description: 自动模式中油门抑制时默认强制为 0。启用后抑制期间改为手动油门，适用于油机在等待起飞时手动保持怠速。
+	// @Values: 0:禁用,1:启用
     // @User: Advanced
     GSCALAR(throttle_suppress_manual,"THR_SUPP_MAN",   0),
 
     // @Param: THR_PASS_STAB
-    // @DisplayName: Throttle passthru in stabilize
-    // @Description: If this is set then when in STABILIZE, FBWA or ACRO modes the throttle is a direct passthru from the transmitter. This means the THR_MIN and THR_MAX settings are not used in these modes. This is useful for petrol engines where you setup a throttle cut switch that suppresses the throttle below the normal minimum.
-	// @Values: 0:Disabled,1:Enabled
+    // @DisplayName: 自稳模式油门直通
+    // @Description: 启用后在 STABILIZE/FBWA/ACRO 中油门直接来自遥控器，THR_MIN 与 THR_MAX 不再生效。适用于油机通过油门切断开关将油门压到正常最小值以下的场景。
+	// @Values: 0:禁用,1:启用
     // @User: Advanced
     GSCALAR(throttle_passthru_stabilize,"THR_PASS_STAB",   0),
 
     // @Param: THR_FAILSAFE
-    // @DisplayName: Throttle and RC Failsafe Enable
-    // @Description: 0 disables the failsafe. 1 enables failsafe on loss of RC input. This is detected either by throttle values below THR_FS_VALUE, loss of receiver valid pulses/data, or by the FS bit in receivers that provide it, like SBUS. A programmable failsafe action will occur and RC inputs, if present, will be ignored. A value of 2 means that the RC inputs won't be used when RC failsafe is detected by any of the above methods, but it won't trigger an RC failsafe action.
-    // @Values: 0:Disabled,1:Enabled,2:EnabledNoFailsafe
+    // @DisplayName: 油门与 RC 失效保护使能
+    // @Description: 0 禁用失效保护；1 在 RC 输入丢失时启用失效保护（通过油门低于 THR_FS_VALUE、接收机脉冲/数据丢失或接收机 FS 标志检测，例如 SBUS）。触发后执行可配置的失效保护动作，并忽略 RC 输入。2 表示检测到 RC 失效时不使用 RC 输入，但不触发失效保护动作。
+    // @Values: 0:禁用,1:启用,2:启用但不触发
     // @User: Standard
     GSCALAR(throttle_fs_enabled,    "THR_FAILSAFE",   int(ThrFailsafe::Enabled)),
 
 
     // @Param: THR_FS_VALUE
-    // @DisplayName: Throttle Failsafe Value
-    // @Description: The PWM level on the throttle input channel below which throttle failsafe triggers. Note that this should be well below the normal minimum for your throttle channel.
+    // @DisplayName: 油门失效保护阈值
+    // @Description: 油门输入通道的 PWM 阈值，低于该值触发油门失效保护。应明显低于正常最小油门。
     // @Range: 925 2200
     // @Increment: 1
     // @User: Standard
     GSCALAR(throttle_fs_value,      "THR_FS_VALUE",   950),
 
     // @Param: TRIM_THROTTLE
-    // @DisplayName: Throttle cruise percentage
-    // @Description: Target percentage of throttle to apply for flight in automatic throttle modes and throttle percentage that maintains AIRSPEED_CRUISE. Caution: low battery voltages at the end of flights may require higher throttle to maintain airspeed.
+    // @DisplayName: 巡航油门百分比
+    // @Description: 自动油门模式下的目标油门百分比，用于维持 AIRSPEED_CRUISE。注意：电池末期电压下降可能需要更高油门才能保持空速。
     // @Units: %
     // @Range: 0 100
     // @Increment: 1
@@ -429,29 +429,29 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(throttle_cruise,        "TRIM_THROTTLE",  AP_PLANE_TRIM_THROTTLE_DEFAULT),
 
     // @Param: THROTTLE_NUDGE
-    // @DisplayName: Throttle nudge enable
-    // @Description: When enabled, this uses the throttle input in auto-throttle modes to 'nudge' the throttle or airspeed to higher or lower values. When you have an airspeed sensor the nudge affects the target airspeed, so that throttle inputs above 50% will increase the target airspeed from AIRSPEED_CRUISE up to a maximum of AIRSPEED_MAX. When no airspeed sensor is enabled the throttle nudge will push up the target throttle for throttle inputs above 50%.
-    // @Values: 0:Disabled,1:Enabled
+    // @DisplayName: 油门微调使能
+    // @Description: 启用后在自动油门模式下通过油门输入“微调”油门或空速。带空速传感器时，油门超过 50% 会将目标空速从 AIRSPEED_CRUISE 提高至 AIRSPEED_MAX；无空速传感器时，油门超过 50% 会提升目标油门。
+    // @Values: 0:禁用,1:启用
     // @User: Standard
     GSCALAR(throttle_nudge,         "THROTTLE_NUDGE",  1),
 
     // @Param: FS_SHORT_ACTN
-    // @DisplayName: Short failsafe action
-    // @Description: The action to take on a short failsafe event. A short failsafe event can be triggered instantly by loss of RC control or by throttle value (see THR_FS_VALUE). If in CIRCLE or RTL mode this parameter is ignored. A short failsafe event in stabilization and manual modes will cause a change to CIRCLE mode if FS_SHORT_ACTN is 0 or 1, a change to FBWA mode with zero throttle if FS_SHORT_ACTN is 2, and a change to FBWB mode if FS_SHORT_ACTN is 4. In all other modes (AUTO, GUIDED and LOITER) a short failsafe event will cause no mode change if FS_SHORT_ACTN is set to 0, will cause a change to CIRCLE mode if set to 1, will change to FBWA mode with zero throttle if set to 2, or will change to FBWB if set to 4. Please see the documentation for FS_LONG_ACTN for the behaviour after FS_LONG_TIMEOUT seconds of failsafe. This parameter only applies to failsafes during fixed wing modes. Quadplane modes will switch to QLAND unless Q_OPTIONS bit 5(QRTL) or 20(RTL) are set.
-    // @Values: 0:CIRCLE/no change(if already in AUTO|GUIDED|LOITER),1:CIRCLE,2:FBWA at zero throttle,3:Disable,4:FBWB
+    // @DisplayName: 短失效保护动作
+    // @Description: 短失效保护触发时的动作。短失效可由 RC 丢失或油门阈值触发（见 THR_FS_VALUE）。在 CIRCLE 或 RTL 模式下该参数忽略。自稳/手动模式下，FS_SHORT_ACTN=0/1 切到 CIRCLE；=2 切到 FBWA 且油门为 0；=4 切到 FBWB。其他模式（AUTO/GUIDED/LOITER）下，FS_SHORT_ACTN=0 不切模式；=1 切到 CIRCLE；=2 切到 FBWA 且油门为 0；=4 切到 FBWB。FS_LONG_TIMEOUT 之后的行为见 FS_LONG_ACTN 文档。该参数仅适用于固定翼模式；QuadPlane 模式会切到 QLAND，除非设置 Q_OPTIONS 位 5（QRTL）或 20（RTL）。
+    // @Values: 0:CIRCLE/不变(已在 AUTO|GUIDED|LOITER),1:CIRCLE,2:FBWA 且油门为 0,3:禁用,4:FBWB
     // @User: Standard
     GSCALAR(fs_action_short,        "FS_SHORT_ACTN",  FS_ACTION_SHORT_BESTGUESS),
 
     // @Param: FS_LONG_ACTN
-    // @DisplayName: Long failsafe action
-    // @Description: The action to take on a long (FS_LONG_TIMEOUT seconds) failsafe event. If the aircraft was in a stabilization or manual mode when failsafe started and a long failsafe occurs then it will change to RTL mode if FS_LONG_ACTN is 0 or 1, and will change to FBWA if FS_LONG_ACTN is set to 2. If the aircraft was in an auto mode (such as AUTO or GUIDED) when the failsafe started then it will continue in the auto mode if FS_LONG_ACTN is set to 0, will change to RTL mode if FS_LONG_ACTN is set to 1 and will change to FBWA mode if FS_LONG_ACTN is set to 2. If FS_LONG_ACTN is set to 3, the parachute will be deployed (make sure the chute is configured and enabled). If FS_LONG_ACTN is set to 4 the aircraft will switch to mode AUTO with the current waypoint if it is not already in mode AUTO, unless it is in the middle of a landing sequence. If FS_LONG_ACTN is set to 5, will switch to AUTOLAND mode if possible, otherwise RTL mode. This parameter only applies to failsafes during fixed wing modes. Quadplane modes will switch to QLAND unless Q_OPTIONS bit 5 (QRTL) or 20(RTL) are set.
-    // @Values: 0:Continue,1:ReturnToLaunch,2:Glide,3:Deploy Parachute,4:Auto,5:AUTOLAND
+    // @DisplayName: 长失效保护动作
+    // @Description: 长失效（持续 FS_LONG_TIMEOUT 秒）触发时的动作。若失效开始时在自稳/手动模式，则 FS_LONG_ACTN=0/1 切到 RTL，=2 切到 FBWA。若失效开始时在自动模式（AUTO/GUIDED），则 FS_LONG_ACTN=0 保持原模式，=1 切到 RTL，=2 切到 FBWA。=3 部署降落伞（确保已配置并启用）；=4 切到 AUTO 并使用当前航点（若未处于降落序列）；=5 尽可能切到 AUTOLAND，否则 RTL。该参数仅适用于固定翼模式；QuadPlane 模式会切到 QLAND，除非设置 Q_OPTIONS 位 5（QRTL）或 20（RTL）。
+    // @Values: 0:继续,1:返航,2:滑翔,3:释放降落伞,4:自动,5:AUTOLAND
     // @User: Standard
     GSCALAR(fs_action_long,         "FS_LONG_ACTN",   FS_ACTION_LONG_CONTINUE),
 
     // @Param: FS_LONG_TIMEOUT
-    // @DisplayName: Long failsafe timeout
-    // @Description: The time in seconds that a failsafe condition has to persist before a long failsafe event will occur. This defaults to 5 seconds.
+    // @DisplayName: 长失效保护超时
+    // @Description: 失效条件持续达到该时间（秒）后触发长失效保护事件，默认 5 秒。
     // @Units: s
     // @Range: 1 300
     // @Increment: 0.5
@@ -459,66 +459,66 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(fs_timeout_long,        "FS_LONG_TIMEOUT", 5),
 
     // @Param: FS_GCS_ENABL
-    // @DisplayName: GCS failsafe enable
-    // @Description: Enable ground control station telemetry failsafe. Failsafe will trigger after FS_LONG_TIMEOUT seconds of no MAVLink heartbeat messages. There are three possible enabled settings. Setting FS_GCS_ENABL to 1 means that GCS failsafe will be triggered when the aircraft has not received a MAVLink HEARTBEAT message. Note that heartbeat tracking only becomes active after having received the first heartbeat from the MAV_GCS_SYSID primary GCS system. Setting FS_GCS_ENABL to 2 means that GCS failsafe will be triggered on either a loss of HEARTBEAT messages, or a RADIO_STATUS message from a MAVLink enabled telemetry adio indicating that the primary ground station is not receiving status updates from the aircraft, which is indicated by the RADIO_STATUS.remrssi field being zero (this may happen if you have a one way link due to asymmetric noise on the ground station and aircraft radios).Setting FS_GCS_ENABL to 3 means that GCS failsafe will be triggered by Heartbeat(like option one), but only in AUTO mode. WARNING: Enabling this option opens up the possibility of your plane going into failsafe mode and running the motor on the ground it it loses contact with your ground station. If this option is enabled on an electric plane then you should enable ARMING_REQUIRED.
-    // @Values: 0:Disabled,1:Heartbeat,2:HeartbeatAndREMRSSI,3:HeartbeatAndAUTO
+    // @DisplayName: GCS 失效保护使能
+    // @Description: 启用地面站遥测失效保护。若在 FS_LONG_TIMEOUT 秒内未收到 MAVLink HEARTBEAT，则触发失效保护。FS_GCS_ENABL=1：未收到 HEARTBEAT 即触发（仅在收到主地面站 MAV_GCS_SYSID 的首个心跳后开始计时）。=2：HEARTBEAT 丢失或 RADIO_STATUS.remrssi 为 0 时触发（地面站收不到飞机状态，可能因地面站/机载电台噪声不对称导致单向链路）。=3：仅在 AUTO 模式下按心跳触发。警告：启用该选项可能导致在地面失联时进入失效保护并启动电机。若为电动机型，建议同时启用 ARMING_REQUIRED。
+    // @Values: 0:禁用,1:心跳,2:心跳+REMRSSI,3:心跳+AUTO
     // @User: Standard
     GSCALAR(gcs_heartbeat_fs_enabled, "FS_GCS_ENABL", GCS_FAILSAFE_OFF),
 
     // @Param: FLTMODE_CH
-    // @DisplayName: Flightmode channel
-    // @Description: RC Channel to use for flight mode control
-    // @Values: 0:Disabled,1:Channel 1,2:Channel 2,3:Channel 3,4:Channel 4,5:Channel 5,6:Channel 6,7:Channel 7,8:Channel 8,9:Channel 9,10:Channel 10,11:Channel 11,12:Channel 12,13:Channel 13,14:Channel 14,15:Channel 15,16:Channel 16
+    // @DisplayName: 飞行模式通道
+    // @Description: 用于飞行模式控制的 RC 通道
+    // @Values: 0:禁用,1:通道1,2:通道2,3:通道3,4:通道4,5:通道5,6:通道6,7:通道7,8:通道8,9:通道9,10:通道10,11:通道11,12:通道12,13:通道13,14:通道14,15:通道15,16:通道16
     // @User: Advanced
     GSCALAR(flight_mode_channel,    "FLTMODE_CH",     FLIGHT_MODE_CHANNEL),
 
     // @Param: FLTMODE1
-    // @DisplayName: FlightMode1
-    // @Description: Flight mode for switch position 1 (910 to 1230 and above 2049)
+    // @DisplayName: 飞行模式1
+    // @Description: 开关位置 1 的飞行模式（910-1230 与 2049 以上）
     // @Values: 0:Manual,1:CIRCLE,2:STABILIZE,3:TRAINING,4:ACRO,5:FBWA,6:FBWB,7:CRUISE,8:AUTOTUNE,10:Auto,11:RTL,12:Loiter,13:TAKEOFF,14:AVOID_ADSB,15:Guided,17:QSTABILIZE,18:QHOVER,19:QLOITER,20:QLAND,21:QRTL,22:QAUTOTUNE,23:QACRO,24:THERMAL,25:Loiter to QLand,26:AUTOLAND
     // @User: Standard
     GSCALAR(flight_mode1,           "FLTMODE1",       FLIGHT_MODE_1),
 
     // @Param: FLTMODE2
     // @CopyFieldsFrom: FLTMODE1
-    // @DisplayName: FlightMode2
-    // @Description: Flight mode for switch position 2 (1231 to 1360)
+    // @DisplayName: 飞行模式2
+    // @Description: 开关位置 2 的飞行模式（1231-1360）
     GSCALAR(flight_mode2,           "FLTMODE2",       FLIGHT_MODE_2),
 
     // @Param: FLTMODE3
     // @CopyFieldsFrom: FLTMODE1
-    // @DisplayName: FlightMode3
-    // @Description: Flight mode for switch position 3 (1361 to 1490)
+    // @DisplayName: 飞行模式3
+    // @Description: 开关位置 3 的飞行模式（1361-1490）
     GSCALAR(flight_mode3,           "FLTMODE3",       FLIGHT_MODE_3),
 
     // @Param: FLTMODE4
     // @CopyFieldsFrom: FLTMODE1
-    // @DisplayName: FlightMode4
-    // @Description: Flight mode for switch position 4 (1491 to 1620)
+    // @DisplayName: 飞行模式4
+    // @Description: 开关位置 4 的飞行模式（1491-1620）
     GSCALAR(flight_mode4,           "FLTMODE4",       FLIGHT_MODE_4),
 
     // @Param: FLTMODE5
     // @CopyFieldsFrom: FLTMODE1
-    // @DisplayName: FlightMode5
-    // @Description: Flight mode for switch position 5 (1621 to 1749)
+    // @DisplayName: 飞行模式5
+    // @Description: 开关位置 5 的飞行模式（1621-1749）
     GSCALAR(flight_mode5,           "FLTMODE5",       FLIGHT_MODE_5),
 
     // @Param: FLTMODE6
     // @CopyFieldsFrom: FLTMODE1
-    // @DisplayName: FlightMode6
-    // @Description: Flight mode for switch position 6 (1750 to 2049)
+    // @DisplayName: 飞行模式6
+    // @Description: 开关位置 6 的飞行模式（1750-2049）
     GSCALAR(flight_mode6,           "FLTMODE6",       FLIGHT_MODE_6),
 
     // @Param: INITIAL_MODE
-    // @DisplayName: Initial flight mode
-    // @Description: This selects the mode to start in on boot. This is useful for when you want to start in AUTO mode on boot without a receiver.
+    // @DisplayName: 初始飞行模式
+    // @Description: 启动时进入的模式，适合无接收机时开机直接进入 AUTO。
     // @CopyValuesFrom: FLTMODE1
     // @User: Advanced
     GSCALAR(initial_mode,        "INITIAL_MODE",     Mode::Number::MANUAL),
 
     // @Param: ROLL_LIMIT_DEG
-    // @DisplayName: Maximum Bank Angle
-    // @Description: Maximum bank angle commanded in modes with stabilized limits. Increase this value for sharper turns, but decrease to prevent accelerated stalls.
+    // @DisplayName: 最大倾斜角
+    // @Description: 在稳定限幅模式中允许的最大倾斜角。增大可更急转弯，减小可防止加速失速。
     // @Units: deg
     // @Range: 0 90
     // @Increment: 1
@@ -526,8 +526,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(roll_limit,          "ROLL_LIMIT_DEG",    ROLL_LIMIT_DEG),
 
     // @Param: PTCH_LIM_MAX_DEG
-    // @DisplayName: Maximum Pitch Angle
-    // @Description: Maximum pitch up angle commanded in modes with stabilized limits.
+    // @DisplayName: 最大俯仰角
+    // @Description: 在稳定限幅模式中允许的最大上俯仰角。
     // @Units: deg
     // @Range: 0 90
     // @Increment: 1
@@ -535,8 +535,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(pitch_limit_max,     "PTCH_LIM_MAX_DEG",  PITCH_MAX),
 
     // @Param: PTCH_LIM_MIN_DEG
-    // @DisplayName: Minimum Pitch Angle
-    // @Description: Maximum pitch down angle commanded in modes with stabilized limits
+    // @DisplayName: 最小俯仰角
+    // @Description: 在稳定限幅模式中允许的最大下俯仰角。
     // @Units: deg
     // @Range: -90 0
     // @Increment: 1
@@ -544,8 +544,8 @@ const AP_Param::Info Plane::var_info[] = {
     ASCALAR(pitch_limit_min,     "PTCH_LIM_MIN_DEG",  PITCH_MIN),
 
     // @Param: ACRO_ROLL_RATE
-    // @DisplayName: ACRO mode roll rate
-    // @Description: The maximum roll rate at full stick deflection in ACRO mode
+    // @DisplayName: ACRO 横滚角速度
+    // @Description: ACRO 模式下摇杆打满时的最大横滚角速度
     // @Units: deg/s
     // @Range: 10 500
     // @Increment: 1
@@ -553,8 +553,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(acro_roll_rate,          "ACRO_ROLL_RATE",    180),
 
     // @Param: ACRO_PITCH_RATE
-    // @DisplayName: ACRO mode pitch rate
-    // @Description: The maximum pitch rate at full stick deflection in ACRO mode
+    // @DisplayName: ACRO 俯仰角速度
+    // @Description: ACRO 模式下摇杆打满时的最大俯仰角速度
     // @Units: deg/s
     // @Range: 10 500
     // @Increment: 1
@@ -562,8 +562,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(acro_pitch_rate,          "ACRO_PITCH_RATE",  180),
 
     // @Param: ACRO_YAW_RATE
-    // @DisplayName: ACRO mode yaw rate
-    // @Description: The maximum yaw rate at full stick deflection in ACRO mode. If this is zero then rudder is directly controlled by rudder stick input. This option is only available if you also set YAW_RATE_ENABLE to 1.
+    // @DisplayName: ACRO 偏航角速度
+    // @Description: ACRO 模式下摇杆打满时的最大偏航角速度。若设为 0，则方向舵直接由摇杆控制。仅在 YAW_RATE_ENABLE=1 时可用。
     // @Units: deg/s
     // @Range: 0 500
     // @Increment: 1
@@ -571,15 +571,15 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(acro_yaw_rate,            "ACRO_YAW_RATE",    0),
     
     // @Param: ACRO_LOCKING
-    // @DisplayName: ACRO mode attitude locking
-    // @Description: Enable attitude locking when sticks are released. If set to 2 then quaternion based locking is used if the yaw rate controller is enabled. Quaternion based locking will hold any attitude
-    // @Values: 0:Disabled,1:Enabled,2:Quaternion
+    // @DisplayName: ACRO 姿态锁定
+    // @Description: 松杆时启用姿态锁定。设为 2 且启用偏航角速度控制器时使用四元数锁定，可保持任意姿态。
+    // @Values: 0:禁用,1:启用,2:四元数
     // @User: Standard
     GSCALAR(acro_locking,             "ACRO_LOCKING",     0),
 
     // @Param: GROUND_STEER_ALT
-    // @DisplayName: Ground steer altitude
-    // @Description: Altitude at which to use the ground steering controller on the rudder. If non-zero then the STEER2SRV controller will be used to control the rudder for altitudes within this limit of the home altitude.
+    // @DisplayName: 地面转向高度
+    // @Description: 使用方向舵地面转向控制器的高度阈值。非零时，在距 Home 高度该范围内使用 STEER2SRV 控制方向舵。
     // @Units: m
     // @Range: -100 100
     // @Increment: 0.1
@@ -587,8 +587,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(ground_steer_alt,         "GROUND_STEER_ALT",   0),
 
     // @Param: GROUND_STEER_DPS
-    // @DisplayName: Ground steer rate
-    // @Description: Ground steering rate in degrees per second for full rudder stick deflection
+    // @DisplayName: 地面转向速率
+    // @Description: 方向舵打满时的地面转向角速度（度/秒）
     // @Units: deg/s
     // @Range: 10 360
     // @Increment: 1
@@ -596,45 +596,45 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(ground_steer_dps,         "GROUND_STEER_DPS",  90),
 
     // @Param: MIXING_GAIN
-    // @DisplayName: Mixing Gain
-    // @Description: The gain for the Vtail and elevon output mixers. The default is 0.5, which ensures that the mixer doesn't saturate, allowing both input channels to go to extremes while retaining control over the output. Hardware mixers often have a 1.0 gain, which gives more servo throw, but can saturate. If you don't have enough throw on your servos with VTAIL_OUTPUT or ELEVON_OUTPUT enabled then you can raise the gain using MIXING_GAIN. The mixer allows outputs in the range 900 to 2100 microseconds.
+    // @DisplayName: 混控增益
+    // @Description: V 尾与副翼/升降舵混控输出增益。默认 0.5 可避免饱和并保留控制余量；硬件混控常为 1.0，行程更大但易饱和。若启用 VTAIL_OUTPUT 或 ELEVON_OUTPUT 后舵面行程不足，可提高 MIXING_GAIN。混控输出范围 900~2100 微秒。
     // @Range: 0.5 1.2
     // @User: Standard
     GSCALAR(mixing_gain,            "MIXING_GAIN",    0.5f),
 
     // @Param: RUDDER_ONLY
-    // @DisplayName: Rudder only aircraft
-    // @Description: Enable rudder only mode. The rudder will control attitude in attitude controlled modes (such as FBWA). You should setup your transmitter to send roll stick inputs to the RCMAP_YAW channel (normally channel 4). The rudder servo should be attached to the RCMAP_YAW channel as well. Note that automatic ground steering will be disabled for rudder only aircraft. You should also set KFF_RDDRMIX to 1.0. You will also need to setup the YAW2SRV_DAMP yaw damping appropriately for your aircraft. A value of 0.5 for YAW2SRV_DAMP is a good starting point.
-    // @Values: 0:Disabled,1:Enabled
+    // @DisplayName: 仅方向舵机型
+    // @Description: 启用仅方向舵模式。方向舵将在姿态控制模式（如 FBWA）中控制姿态。请将横滚杆输入映射到 RCMAP_YAW（通常通道 4），并将方向舵舵机接在该通道。启用后自动地面转向将被禁用。建议将 KFF_RDDRMIX 设为 1.0，并根据机型调整 YAW2SRV_DAMP（建议起始值 0.5）。
+    // @Values: 0:禁用,1:启用
     // @User: Standard
     GSCALAR(rudder_only,             "RUDDER_ONLY",  0),
 
     // @Param: MIXING_OFFSET
-    // @DisplayName: Mixing Offset
-    // @Description: The offset for the Vtail and elevon output mixers, as a percentage. This can be used in combination with MIXING_GAIN to configure how the control surfaces respond to input. The response to aileron or elevator input can be increased by setting this parameter to a positive or negative value. A common usage is to enter a positive value to increase the aileron response of the elevons of a flying wing. The default value of zero will leave the aileron-input response equal to the elevator-input response.
+    // @DisplayName: 混控偏置
+    // @Description: V 尾与副翼/升降舵混控输出的偏置百分比。可与 MIXING_GAIN 配合调整舵面对输入的响应。设为正/负值可增强副翼或升降舵的响应。常见用法是为飞翼的副翼/升降舵设置正值以增强副翼响应。默认 0 表示副翼与升降舵输入响应相同。
     // @Units: d%
     // @Range: -1000 1000
     // @User: Standard
     GSCALAR(mixing_offset,          "MIXING_OFFSET",  0),
 
     // @Param: DSPOILR_RUD_RATE
-    // @DisplayName: Differential spoilers rudder rate
-    // @Description: Sets the amount of deflection that the rudder output will apply to the differential spoilers, as a percentage. The default value of 100 results in full rudder applying full deflection. A value of 0 will result in the differential spoilers exactly following the elevons (no rudder effect).
+    // @DisplayName: 差动扰流板方向舵比例
+    // @Description: 方向舵输出作用到差动扰流板的比例（百分比）。默认 100 表示方向舵打满时扰流板全偏；设为 0 则差动扰流板完全跟随副翼/升降舵（无方向舵作用）。
     // @Units: %
     // @Range: -100 100
     // @User: Standard
     GSCALAR(dspoiler_rud_rate,      "DSPOILR_RUD_RATE",  DSPOILR_RUD_RATE_DEFAULT),
 
     // @Param: LOG_BITMASK
-    // @DisplayName: Log bitmask
-    // @Description: Bitmap of what on-board log types to enable. This value is made up of the sum of each of the log types you want to be saved. It is usually best just to enable all basic log types by setting this to 65535.
-    // @Bitmask: 0:Fast Attitude,1:Medium Attitude,2:GPS,3:Performance,4:Control Tuning,5:Navigation Tuning,7:IMU,8:Mission Commands,9:Battery Monitor,10:Compass,11:TECS,12:Camera,13:RC Input-Output,14:Rangefinder,19:Raw IMU,20:Fullrate Attitude,21:Video Stabilization,22:Fullrate Notch
+    // @DisplayName: 日志位掩码
+    // @Description: 启用机载日志类型的位掩码，为各日志类型之和。通常建议设为 65535 以开启全部基础日志。
+    // @Bitmask: 0:快速姿态,1:中速姿态,2:GPS,3:性能,4:控制调参,5:导航调参,7:IMU,8:任务指令,9:电池监测,10:指南针,11:TECS,12:相机,13:RC 输入输出,14:测距仪,19:原始 IMU,20:全速姿态,21:视频稳定,22:全速陷波
     // @User: Advanced
     GSCALAR(log_bitmask,            "LOG_BITMASK",    DEFAULT_LOG_BITMASK),
 
     // @Param: SCALING_SPEED
-    // @DisplayName: speed used for speed scaling calculations
-    // @Description: Airspeed in m/s to use when calculating surface speed scaling. Note that changing this value will affect all PID values
+    // @DisplayName: 速度缩放计算用速度
+    // @Description: 计算舵面速度缩放所用的空速（m/s）。修改该值会影响所有 PID。
     // @Units: m/s
     // @Range: 0 50
     // @Increment: 0.1
@@ -642,37 +642,37 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(scaling_speed,        "SCALING_SPEED",    SCALING_SPEED),
 
     // @Param: MIN_GROUNDSPEED
-    // @DisplayName: Minimum ground speed
-    // @Description: Minimum ground speed when under airspeed control
+    // @DisplayName: 最小地速
+    // @Description: 空速控制下允许的最小地速
     // @Units: m/s
     // @User: Advanced
     ASCALAR(min_groundspeed,      "MIN_GROUNDSPEED",  MIN_GROUNDSPEED),
 
     // @Param: PTCH_TRIM_DEG
-    // @DisplayName: Pitch angle offset
-    // @Description: Offset in degrees used for in-flight pitch trimming for level flight. Correct ground leveling is an alternative to changing this parameter.
+    // @DisplayName: 俯仰角偏移
+    // @Description: 用于平飞空中配平的俯仰角偏移（度）。也可通过正确的地面水平校准来替代该参数。
     // @Units: deg
     // @Range: -45 45
     // @User: Standard
     GSCALAR(pitch_trim,             "PTCH_TRIM_DEG",  0.0f),
 
     // @Param: RTL_ALTITUDE
-    // @DisplayName: RTL altitude
-    // @Description: Target altitude above home for RTL mode. Maintains current altitude if set to -1. Rally point altitudes are used if plane does not return to home.
+    // @DisplayName: RTL 高度
+    // @Description: RTL 模式下相对 Home 的目标高度。设为 -1 则保持当前高度。若不返回 Home，则使用备降点高度。
     // @Units: m
     // @User: Standard
     GSCALAR(RTL_altitude,        "RTL_ALTITUDE",   ALT_HOLD_HOME),
 
     // @Param: CRUISE_ALT_FLOOR
-    // @DisplayName: Minimum altitude for FBWB and CRUISE mode
-    // @Description: This is the minimum altitude in meters (above home) that FBWB and CRUISE modes will allow. If you attempt to descend below this altitude then the plane will level off. It will also force a climb to this altitude if below in these modes. A value of zero means no limit.
+    // @DisplayName: FBWB/CRUISE 最小高度
+    // @Description: FBWB 与 CRUISE 模式允许的最小高度（相对 Home，米）。低于该高度将拉平，并在这些模式下强制爬升至该高度。设为 0 表示不限制。
     // @Units: m
     // @User: Standard
     GSCALAR(cruise_alt_floor,   "CRUISE_ALT_FLOOR", CRUISE_ALT_FLOOR),
 
     // @Param: FLAP_1_PERCNT
-    // @DisplayName: Flap 1 percentage
-    // @Description: The percentage change in flap position when FLAP_1_SPEED is reached. Use zero to disable flaps
+    // @DisplayName: 襟翼 1 百分比
+    // @Description: 达到 FLAP_1_SPEED 时襟翼位置变化百分比。设为 0 可禁用襟翼。
     // @Range: 0 100
     // @Increment: 1
     // @Units: %
@@ -680,8 +680,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(flap_1_percent,         "FLAP_1_PERCNT",  FLAP_1_PERCENT),
 
     // @Param: FLAP_1_SPEED
-    // @DisplayName: Flap 1 speed
-    // @Description: The speed in meters per second at which to engage FLAP_1_PERCENT of flaps. Note that FLAP_1_SPEED should be greater than or equal to FLAP_2_SPEED
+    // @DisplayName: 襟翼 1 速度
+    // @Description: 达到该空速（m/s）时应用 FLAP_1_PERCENT 襟翼。注意 FLAP_1_SPEED 应大于或等于 FLAP_2_SPEED。
     // @Range: 0 100
 	// @Increment: 1
     // @Units: m/s
@@ -689,8 +689,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(flap_1_speed,           "FLAP_1_SPEED",   FLAP_1_SPEED),
 
     // @Param: FLAP_2_PERCNT
-    // @DisplayName: Flap 2 percentage
-    // @Description: The percentage change in flap position when FLAP_2_SPEED is reached. Use zero to disable flaps
+    // @DisplayName: 襟翼 2 百分比
+    // @Description: 达到 FLAP_2_SPEED 时襟翼位置变化百分比。设为 0 可禁用襟翼。
     // @Range: 0 100
 	// @Units: %
     // @Increment: 1
@@ -698,8 +698,8 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(flap_2_percent,         "FLAP_2_PERCNT",  FLAP_2_PERCENT),
 
     // @Param: FLAP_2_SPEED
-    // @DisplayName: Flap 2 speed
-    // @Description: The speed in meters per second at which to engage FLAP_2_PERCENT of flaps. Note that FLAP_1_SPEED should be greater than or equal to FLAP_2_SPEED
+    // @DisplayName: 襟翼 2 速度
+    // @Description: 达到该空速（m/s）时应用 FLAP_2_PERCENT 襟翼。注意 FLAP_1_SPEED 应大于或等于 FLAP_2_SPEED。
     // @Range: 0 100
 	// @Units: m/s
 	// @Increment: 1
@@ -708,8 +708,8 @@ const AP_Param::Info Plane::var_info[] = {
 
 #if HAL_WITH_IO_MCU
     // @Param: OVERRIDE_CHAN
-    // @DisplayName: IO override channel
-    // @Description: If set to a non-zero value then this is an RC input channel number to use for giving IO manual control in case the main FMU microcontroller on a board with a IO co-processor fails. When this RC input channel goes above 1750 the FMU microcontroller will no longer be involved in controlling the servos and instead the IO microcontroller will directly control the servos. Note that IO manual control will be automatically activated if the FMU crashes for any reason. This parameter allows you to test for correct manual behaviour without actually crashing the FMU. This parameter is can be set to a non-zero value either for ground testing purposes or for giving the effect of an external override control board. Note that you may set OVERRIDE_CHAN to the same channel as FLTMODE_CH to get IO based override when in flight mode 6. Note that when override is triggered due to a FMU crash the 6 auxiliary output channels on the FMU will no longer be updated, so all the flight controls you need must be assigned to the first 8 channels on boards with an IOMCU.
+    // @DisplayName: IO 覆盖通道
+    // @Description: 设为非零时，用该 RC 输入通道在带 IO 协处理器的板上实现 FMU 主控失效时的 IO 手动控制。该通道超过 1750 后，FMU 不再控制舵机，由 IO 直接控制。FMU 崩溃时 IO 手动控制会自动启用。该参数便于在不让 FMU 崩溃的情况下测试手动行为，也可用于外部覆盖控制板。可将 OVERRIDE_CHAN 与 FLTMODE_CH 设为同一通道，在飞行模式 6 时触发 IO 覆盖。注意：因 FMU 崩溃触发覆盖时，FMU 的 6 路辅输出不再更新，因此需要将飞控通道分配在 IOMCU 的前 8 路输出上。
     // @Range: 0 16
     // @Increment: 1
     // @User: Advanced
@@ -717,15 +717,15 @@ const AP_Param::Info Plane::var_info[] = {
 #endif
 
     // @Param: RTL_AUTOLAND
-    // @DisplayName: RTL auto land
-    // @Description: Automatically begin landing sequence after arriving at RTL location. This requires the addition of a DO_LAND_START mission item, which acts as a marker for the start of a landing sequence. The closest landing sequence will be chosen to the current location For a value of 1 a rally point will be used instead of HOME if in range (see rally point documentation).If this is set to 0 and there is a DO_LAND_START or DO_RETURN_PATH_START mission item then you will get an arming check failure. You can set to a value of 3 to avoid the arming check failure and use the DO_LAND_START for go-around (see wiki for aborting autolandings) without it changing RTL behaviour.
-    // @Values: 0:Disable,1:Fly HOME then land via DO_LAND_START mission item, 2:Go directly to landing sequence via DO_LAND_START mission item, 3:OnlyForGoAround, 4:Go directly to landing sequence via DO_RETURN_PATH_START mission item
+    // @DisplayName: RTL 自动降落
+    // @Description: 到达 RTL 位置后自动进入降落序列。需添加 DO_LAND_START 任务项作为降落序列起点标记，并会选择离当前位置最近的降落序列。值为 1 时，若备降点在范围内则用备降点替代 HOME（详见备降点文档）。若设为 0 且任务中包含 DO_LAND_START 或 DO_RETURN_PATH_START，则会触发解锁检查失败。可设为 3 以避免解锁检查失败，并将 DO_LAND_START 仅用于复飞（详见自动降落中止说明），且不改变 RTL 行为。
+    // @Values: 0:禁用,1:先返航再按 DO_LAND_START 降落,2:直接进入 DO_LAND_START 降落序列,3:仅用于复飞,4:直接进入 DO_RETURN_PATH_START 降落序列
     // @User: Standard
     GSCALAR(rtl_autoland,         "RTL_AUTOLAND",   float(RtlAutoland::RTL_DISABLE)),
 
     // @Param: CRASH_ACC_THRESH
-    // @DisplayName: Crash Deceleration Threshold
-    // @Description: X-Axis deceleration threshold to notify the crash detector that there was a possible impact which helps disarm the motor quickly after a crash. This value should be much higher than normal negative x-axis forces during normal flight, check flight log files to determine the average IMU.x values for your aircraft and motor type. Higher value means less sensitive (triggers on higher impact). For electric planes that don't vibrate much during fight a value of 25 is good (that's about 2.5G). For petrol/nitro planes you'll want a higher value. Set to 0 to disable the collision detector.
+    // @DisplayName: 碰撞减速度阈值
+    // @Description: X 轴减速度阈值，用于通知碰撞检测器可能发生撞击，以便坠机后快速上锁电机。该值应显著高于正常飞行的 X 轴负加速度，可通过日志查看 IMU.x 平均值。值越大灵敏度越低（需更大冲击才触发）。电机震动较小的电动机型建议 25（约 2.5G），油机/硝基机型需更高。设为 0 禁用碰撞检测。
     // @Units: m/s/s
     // @Range: 10 127
     // @Increment: 1
@@ -733,9 +733,9 @@ const AP_Param::Info Plane::var_info[] = {
     GSCALAR(crash_accel_threshold,          "CRASH_ACC_THRESH",   0),
 
     // @Param: CRASH_DETECT
-    // @DisplayName: Crash Detection
-    // @Description: Automatically detect a crash during AUTO flight and perform the bitmask selected action(s). Disarm will turn off motor for safety and to help against burning out ESC and motor. Set to 0 to disable crash detection.
-    // @Bitmask: 0:Disarm
+    // @DisplayName: 碰撞检测
+    // @Description: 在 AUTO 飞行中自动检测坠机并执行所选动作。上锁会关闭电机以确保安全并避免烧毁电调/电机。设为 0 禁用。
+    // @Bitmask: 0:上锁
     // @User: Advanced
     ASCALAR(crash_detection_enable,         "CRASH_DETECT",   0),
 
@@ -743,7 +743,7 @@ const AP_Param::Info Plane::var_info[] = {
     // @Path: ../libraries/AP_Baro/AP_Baro.cpp
     GOBJECT(barometer, "BARO", AP_Baro),
 
-    // GPS driver
+    // GPS 驱动
     // @Group: GPS
     // @Path: ../libraries/AP_GPS/AP_GPS.cpp
     GOBJECT(gps, "GPS", AP_GPS),
@@ -776,9 +776,9 @@ const AP_Param::Info Plane::var_info[] = {
     GOBJECT(rangefinder,            "RNGFND", RangeFinder),
 
     // @Param: RNGFND_LANDING
-    // @DisplayName: Enable use of rangefinder
-    // @Description: Sets the use of a rangefinder for automatic landing and other use cases. When enabled for landing and takeoff the rangefinder will be used both on the landing approach and for final flare as well as as VTOL landing and for takeoffs and throttle suppression when close to the ground. When enabled for assist the rangefinder will be used for VTOL assistance. When enabled for climb the rangefinder will be used for the initial climb in QRTL and AUTO. Set to 0 to disable use of the rangefinder.
-    // @Bitmask: 0:All, 1:TakeoffAndLanding, 2:Assist, 3:InitialClimb
+    // @DisplayName: 启用测距仪
+    // @Description: 设置测距仪用于自动降落等场景。启用起降时，用于降落进近与最终拉平、VTOL 降落、起飞以及近地油门抑制；启用辅助时用于 VTOL 辅助；启用爬升时用于 QRTL 与 AUTO 的初始爬升。设为 0 禁用测距仪。
+    // @Bitmask: 0:全部, 1:起飞与降落, 2:辅助, 3:初始爬升
     // @User: Standard
     GSCALAR(rangefinder_landing,    "RNGFND_LANDING",   0),
 #endif
@@ -837,7 +837,7 @@ const AP_Param::Info Plane::var_info[] = {
     // @Path: ../libraries/APM_Control/AP_SteerController.cpp
 	GOBJECT(steerController,        "STEER2SRV_",   AP_SteerController),
 
-	// variables not in the g class which contain EEPROM saved variables
+	// 不在 g 类中、但包含 EEPROM 保存变量的对象
 
     // @Group: COMPASS_
     // @Path: ../libraries/AP_Compass/AP_Compass.cpp
@@ -861,7 +861,7 @@ const AP_Param::Info Plane::var_info[] = {
     // @Path: ../libraries/AP_AHRS/AP_AHRS.cpp
     GOBJECT(ahrs,                   "AHRS_",    AP_AHRS),
 
-    // Airspeed was here
+    // Airspeed 曾在此
 
     // @Group: NAVL1_
     // @Path: ../libraries/AP_L1_Control/AP_L1_Control.cpp
@@ -1007,11 +1007,11 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_SUBGROUPINFO(ice_control, "ICE_", 2, ParametersG2, AP_ICEngine),
 #endif
 
-    // 3 was used by prototype for servo_channels
+    // 3 曾用于 servo_channels 的原型
 
-    // 4 was used by SYSID_ENFORCE
+    // 4 曾用于 SYSID_ENFORCE
 
-    // AP_Stats was 5
+    // AP_Stats 曾为 5
 
     // @Group: SERVO
     // @Path: ../libraries/SRV_Channel/SRV_Channels.cpp
@@ -1028,8 +1028,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 #endif
   
     // @Param: RUDD_DT_GAIN
-    // @DisplayName: rudder differential thrust gain
-    // @Description: gain control from rudder to differential thrust
+    // @DisplayName: 方向舵差动推力增益
+    // @Description: 方向舵到差动推力的增益
     // @Range: 0 100
     // @Units: %
     // @Increment: 1
@@ -1037,51 +1037,51 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("RUDD_DT_GAIN", 9, ParametersG2, rudd_dt_gain, 10),
 
     // @Param: MANUAL_RCMASK
-    // @DisplayName: Manual R/C pass-through mask
-    // @Description: Mask of R/C channels to pass directly to corresponding output channel when in MANUAL mode. When in any mode except MANUAL the channels selected with this option behave normally. This parameter is designed to allow for complex mixing strategies to be used for MANUAL flight using transmitter based mixing. Note that when this option is used you need to be very careful with pre-flight checks to ensure that the output is correct both in MANUAL and non-MANUAL modes.
-    // @Bitmask: 0:Chan1,1:Chan2,2:Chan3,3:Chan4,4:Chan5,5:Chan6,6:Chan7,7:Chan8,8:Chan9,9:Chan10,10:Chan11,11:Chan12,12:Chan13,13:Chan14,14:Chan15,15:Chan16
+    // @DisplayName: 手动 RC 直通掩码
+    // @Description: MANUAL 模式下将 RC 通道直接直通到对应输出通道的掩码。非 MANUAL 模式下这些通道按正常逻辑工作。该参数用于在 MANUAL 下配合发射机混控实现复杂混控策略。启用后需认真进行飞前检查，确保 MANUAL 与非 MANUAL 模式下输出均正确。
+    // @Bitmask: 0:通道1,1:通道2,2:通道3,3:通道4,4:通道5,5:通道6,6:通道7,7:通道8,8:通道9,9:通道10,10:通道11,11:通道12,12:通道13,13:通道14,14:通道15,15:通道16
     // @User: Advanced
     AP_GROUPINFO("MANUAL_RCMASK", 10, ParametersG2, manual_rc_mask, 0),
     
     // @Param: HOME_RESET_ALT
-    // @DisplayName: Home reset altitude threshold
-    // @Description: When the aircraft is within this altitude of the home waypoint, while disarmed it will automatically update the home position. Set to 0 to continuously reset it.
-    // @Values: -1:Never reset,0:Always reset
+    // @DisplayName: Home 复位高度阈值
+    // @Description: 未解锁时若飞机在 Home 航点的该高度范围内，将自动更新 Home 位置。设为 0 表示持续重置。
+    // @Values: -1:从不重置,0:始终重置
     // @Range: -1 127
     // @Units: m
     // @User: Advanced
     AP_GROUPINFO("HOME_RESET_ALT", 11, ParametersG2, home_reset_threshold, 0),
 
-    // 12 was AP_Gripper
+    // 12 曾为 AP_Gripper
 
     // @Param: FLIGHT_OPTIONS
-    // @DisplayName: Flight mode options
-    // @Description: Flight mode specific options
-    // @Bitmask: 0: Rudder mixing in direct flight modes only (Manual/Stabilize/Acro)
-    // @Bitmask: 1: Use centered throttle in Cruise or FBWB to indicate trim airspeed
-    // @Bitmask: 2: Disable attitude check for takeoff arming
-    // @Bitmask: 3: Force target airspeed to trim airspeed in Cruise or FBWB
-    // @Bitmask: 4: Climb to RTL_ALTITUDE before turning for RTL
-    // @Bitmask: 5: Enable yaw damper in acro mode
-    // @Bitmask: 6: Suppress speed scaling during auto takeoffs to be 1 or less to prevent oscillations without airspeed sensor.
-    // @Bitmask: 7: EnableDefaultAirspeed for takeoff
-    // @Bitmask: 8: Remove the PTCH_TRIM_DEG on the GCS horizon
-    // @Bitmask: 9: Remove the PTCH_TRIM_DEG on the OSD horizon
-    // @Bitmask: 10: Adjust mid-throttle to be TRIM_THROTTLE in non-auto throttle modes except MANUAL
-    // @Bitmask: 11: Disable suppression of fixed wing rate gains in ground mode
-    // @Bitmask: 12: Enable FBWB style loiter altitude control
-    // @Bitmask: 13: Indicate takeoff waiting for neutral rudder with flight control surfaces
-    // @Bitmask: 14: In AUTO - climb to next waypoint altitude immediately instead of linear climb
-    // @Bitmask: 15: Enable autoflap in manual modes and use minimum of target and actual speed for flap setting
-    // @Bitmask: 16: Enable full aerodynamic load factor-based roll limits when an airspeed sensor is enabled and AIRSPEED_STALL is set
+    // @DisplayName: 飞行模式选项
+    // @Description: 飞行模式相关选项
+    // @Bitmask: 0: 仅在直飞模式中启用方向舵混控（Manual/Stabilize/Acro）
+    // @Bitmask: 1: 在 Cruise/FBWB 中使用中位油门表示配平空速
+    // @Bitmask: 2: 起飞解锁时禁用姿态检查
+    // @Bitmask: 3: 在 Cruise/FBWB 中强制目标空速为配平空速
+    // @Bitmask: 4: RTL 转弯前先爬升到 RTL_ALTITUDE
+    // @Bitmask: 5: 在 ACRO 模式启用偏航阻尼
+    // @Bitmask: 6: 自动起飞期间抑制速度缩放使其不超过 1，以防无空速传感器振荡
+    // @Bitmask: 7: 起飞启用默认空速
+    // @Bitmask: 8: GCS 姿态仪不显示 PTCH_TRIM_DEG
+    // @Bitmask: 9: OSD 姿态仪不显示 PTCH_TRIM_DEG
+    // @Bitmask: 10: 非自动油门模式（除 MANUAL）将中位油门调整为 TRIM_THROTTLE
+    // @Bitmask: 11: 地面模式下不抑制固定翼角速度增益
+    // @Bitmask: 12: 启用 FBWB 风格盘旋高度控制
+    // @Bitmask: 13: 起飞等待方向舵中位时用舵面提示
+    // @Bitmask: 14: AUTO 中直接爬升到下一航点高度（非线性爬升）
+    // @Bitmask: 15: 手动模式启用自动襟翼，襟翼设定使用目标与实际速度的最小值
+    // @Bitmask: 16: 空速传感器启用且 AIRSPEED_STALL 设置时，启用完整气动载荷因子滚转限幅
     // @User: Advanced
     AP_GROUPINFO("FLIGHT_OPTIONS", 13, ParametersG2, flight_options, 0),
 
     // 14 was AP_Scripting
 
     // @Param: TKOFF_ACCEL_CNT
-    // @DisplayName: Takeoff throttle acceleration count
-    // @Description: This is the number of acceleration events to require for arming with TKOFF_THR_MINACC. The default is 1, which means a single forward acceleration above TKOFF_THR_MINACC will arm. By setting this higher than 1 you can require more forward/backward movements to arm.
+    // @DisplayName: 起飞加速度计数
+    // @Description: 使用 TKOFF_THR_MINACC 解锁所需的加速度事件次数。默认 1 表示一次超过阈值的前向加速度即可解锁；设为大于 1 可要求多次前后运动。
     // @Range: 1 10
     // @User: Standard
     AP_GROUPINFO("TKOFF_ACCEL_CNT", 15, ParametersG2, takeoff_throttle_accel_count, 1),
@@ -1093,8 +1093,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 #endif
 
     // @Param: DSPOILER_CROW_W1
-    // @DisplayName: Differential spoiler crow flaps outer weight
-    // @Description: This is amount of deflection applied to the two outer surfaces for differential spoilers for flaps to give crow flaps. It is a number from 0 to 100. At zero no crow flaps are applied. A recommended starting value is 25.
+    // @DisplayName: 差动扰流板鸭式襟翼外侧权重
+    // @Description: 用于外侧两片舵面的差动扰流板/鸭式襟翼偏转量（0-100）。0 表示不使用鸭式襟翼，建议起始值 25。
     // @Range: 0 100
     // @Units: %
     // @Increment: 1
@@ -1102,8 +1102,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("DSPOILER_CROW_W1", 17, ParametersG2, crow_flap_weight_outer, 0),
 
     // @Param: DSPOILER_CROW_W2
-    // @DisplayName: Differential spoiler crow flaps inner weight
-    // @Description: This is amount of deflection applied to the two inner surfaces for differential spoilers for flaps to give crow flaps. It is a number from 0 to 100. At zero no crow flaps are applied. A recommended starting value is 45.
+    // @DisplayName: 差动扰流板鸭式襟翼内侧权重
+    // @Description: 用于内侧两片舵面的差动扰流板/鸭式襟翼偏转量（0-100）。0 表示不使用鸭式襟翼，建议起始值 45。
     // @Range: 0 100
     // @Units: %
     // @Increment: 1
@@ -1111,8 +1111,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("DSPOILER_CROW_W2", 18, ParametersG2, crow_flap_weight_inner, 0),
 
     // @Param: TKOFF_TIMEOUT
-    // @DisplayName: Takeoff timeout
-    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.
+    // @DisplayName: 起飞超时
+    // @Description: 自动起飞超时。若非零且在该时间内地速未达到至少 4 m/s，则中止起飞并上锁。为 0 表示不限制超时。
     // @Range: 0 120
     // @Increment: 1
     // @Units: s
@@ -1120,15 +1120,15 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("TKOFF_TIMEOUT", 19, ParametersG2, takeoff_timeout, 0),
 
     // @Param: DSPOILER_OPTS
-    // @DisplayName: Differential spoiler and crow flaps options
-    // @Description: Differential spoiler and crow flaps options.  Progressive crow flaps only first (0-50% flap in) then crow flaps (50 - 100% flap in).
-    // @Bitmask: 0:Pitch input, 1:use both control surfaces on each wing for roll, 2:Progressive crow flaps
+    // @DisplayName: 差动扰流板与鸭式襟翼选项
+    // @Description: 差动扰流板与鸭式襟翼选项。渐进式鸭式襟翼：先仅襟翼（0-50%），再进入鸭式襟翼（50-100%）。
+    // @Bitmask: 0:俯仰输入, 1:每侧两舵面同时用于滚转, 2:渐进式鸭式襟翼
     // @User: Advanced
     AP_GROUPINFO("DSPOILER_OPTS", 20, ParametersG2, crow_flap_options, 3),
 
     // @Param: DSPOILER_AILMTCH
-    // @DisplayName: Differential spoiler aileron matching
-    // @Description: This scales down the inner flaps so less than full downwards range can be used for differential spoiler and full span ailerons, 100 is use full range, upwards travel is unaffected
+    // @DisplayName: 差动扰流板副翼匹配
+    // @Description: 缩放内侧襟翼的下偏幅度，使差动扰流板/全翼副翼不必用到全下偏行程。100 表示使用全行程，上偏不受影响。
     // @Range: 0 100
     // @Units: %
     // @Increment: 1
@@ -1136,11 +1136,11 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("DSPOILER_AILMTCH", 21, ParametersG2, crow_flap_aileron_matching, 100),
 
 
-    // 22 was EFI
+    // 22 曾为 EFI
 
     // @Param: FWD_BAT_VOLT_MAX
-    // @DisplayName: Forward throttle battery voltage compensation maximum voltage
-    // @Description: Forward throttle battery voltage compensation maximum voltage (voltage above this will have no additional scaling effect on thrust). Recommend 4.2 * cell count, 0 = Disabled. Recommend THR_MAX is set to no more than 100 x FWD_BAT_VOLT_MIN / FWD_BAT_VOLT_MAX, THR_MIN is set to no less than -100 x FWD_BAT_VOLT_MIN / FWD_BAT_VOLT_MAX and climb descent rate limits are set accordingly.
+    // @DisplayName: 前向油门电压补偿最大电压
+    // @Description: 前向油门电压补偿的最大电压（高于该电压不再增加推力缩放）。建议 4.2×电芯数，0 表示禁用。建议 THR_MAX 不高于 100×FWD_BAT_VOLT_MIN/FWD_BAT_VOLT_MAX，THR_MIN 不低于 -100×FWD_BAT_VOLT_MIN/FWD_BAT_VOLT_MAX，并相应设置爬升/下降率限制。
     // @Range: 6 35
     // @Units: V
     // @Increment: 0.1
@@ -1148,8 +1148,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("FWD_BAT_VOLT_MAX", 23, ParametersG2, fwd_batt_cmp.batt_voltage_max, 0.0f),
 
     // @Param: FWD_BAT_VOLT_MIN
-    // @DisplayName: Forward throttle battery voltage compensation minimum voltage
-    // @Description: Forward throttle battery voltage compensation minimum voltage (voltage below this will have no additional scaling effect on thrust).  Recommend 3.5 * cell count, 0 = Disabled. Recommend THR_MAX is set to no more than 100 x FWD_BAT_VOLT_MIN / FWD_BAT_VOLT_MAX, THR_MIN is set to no less than -100 x FWD_BAT_VOLT_MIN / FWD_BAT_VOLT_MAX and climb descent rate limits are set accordingly.
+    // @DisplayName: 前向油门电压补偿最小电压
+    // @Description: 前向油门电压补偿的最小电压（低于该电压不再增加推力缩放）。建议 3.5×电芯数，0 表示禁用。建议 THR_MAX 不高于 100×FWD_BAT_VOLT_MIN/FWD_BAT_VOLT_MAX，THR_MIN 不低于 -100×FWD_BAT_VOLT_MIN/FWD_BAT_VOLT_MAX，并相应设置爬升/下降率限制。
     // @Range: 6 35
     // @Units: V
     // @Increment: 0.1
@@ -1157,24 +1157,24 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("FWD_BAT_VOLT_MIN", 24, ParametersG2, fwd_batt_cmp.batt_voltage_min, 0.0f),
 
     // @Param: FWD_BAT_IDX
-    // @DisplayName: Forward throttle battery compensation index
-    // @Description: Which battery monitor should be used for doing compensation for the forward throttle
-    // @Values: 0:First battery, 1:Second battery
+    // @DisplayName: 前向油门电池补偿索引
+    // @Description: 用于前向油门补偿的电池监测器索引
+    // @Values: 0:第一电池, 1:第二电池
     // @Range: 0 15
     // @User: Advanced
     AP_GROUPINFO("FWD_BAT_IDX", 25, ParametersG2, fwd_batt_cmp.batt_idx, 0),
 
     // @Param: FS_EKF_THRESH
-    // @DisplayName: EKF failsafe variance threshold
-    // @Description: Allows setting the maximum acceptable compass and velocity variance used to check navigation health in VTOL modes
-    // @Values: 0.6:Strict, 0.8:Default, 1.0:Relaxed
+    // @DisplayName: EKF 失效保护方差阈值
+    // @Description: 设置 VTOL 模式下用于检查导航健康的最大可接受罗盘与速度方差
+    // @Values: 0.6:严格, 0.8:默认, 1.0:宽松
     // @Range: 0.6 1.0
     // @User: Advanced
     AP_GROUPINFO("FS_EKF_THRESH", 26, ParametersG2, fs_ekf_thresh, FS_EKF_THRESHOLD_DEFAULT),
 
     // @Param: RTL_CLIMB_MIN
-    // @DisplayName: RTL minimum climb
-    // @Description: The vehicle will climb this many m during the initial climb portion of the RTL. During this time the roll will be limited to LEVEL_ROLL_LIMIT degrees.
+    // @DisplayName: RTL 最小爬升
+    // @Description: RTL 初始爬升阶段的最小爬升高度（m）。期间横滚角限制为 LEVEL_ROLL_LIMIT。
     // @Units: m
     // @Range: 0 30
     // @Increment: 1
@@ -1188,34 +1188,34 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 #endif // AP_PLANE_OFFBOARD_GUIDED_SLEW_ENABLED
 
     // @Param: MAN_EXPO_ROLL
-    // @DisplayName: Manual control expo for roll
-    // @Description: Percentage exponential for roll input in MANUAL, ACRO and TRAINING modes
+    // @DisplayName: 手动横滚 Expo
+    // @Description: MANUAL/ACRO/TRAINING 模式下横滚输入的指数比例
     // @Range: 0 100
     // @Increment: 1
     // @User: Standard
     AP_GROUPINFO("MAN_EXPO_ROLL", 29, ParametersG2, man_expo_roll, 0),
 
     // @Param: MAN_EXPO_PITCH
-    // @DisplayName: Manual input expo for pitch
-    // @Description: Percentage exponential for pitch input in MANUAL, ACRO and TRAINING modes
+    // @DisplayName: 手动俯仰 Expo
+    // @Description: MANUAL/ACRO/TRAINING 模式下俯仰输入的指数比例
     // @Range: 0 100
     // @Increment: 1
     // @User: Standard
     AP_GROUPINFO("MAN_EXPO_PITCH", 30, ParametersG2, man_expo_pitch, 0),
 
     // @Param: MAN_EXPO_RUDDER
-    // @DisplayName: Manual input expo for rudder
-    // @Description: Percentage exponential for rudder input in MANUAL, ACRO and TRAINING modes
+    // @DisplayName: 手动方向舵 Expo
+    // @Description: MANUAL/ACRO/TRAINING 模式下方向舵输入的指数比例
     // @Range: 0 100
     // @Increment: 1
     // @User: Standard
     AP_GROUPINFO("MAN_EXPO_RUDDER", 31, ParametersG2, man_expo_rudder, 0),
 
     // @Param: ONESHOT_MASK
-    // @DisplayName: Oneshot output mask
-    // @Description: Mask of output channels to use oneshot on
+    // @DisplayName: Oneshot 输出掩码
+    // @Description: 使用 Oneshot 的输出通道掩码
     // @User: Advanced
-    // @Bitmask: 0: Servo 1, 1: Servo 2, 2: Servo 3, 3: Servo 4, 4: Servo 5, 5: Servo 6, 6: Servo 7, 7: Servo 8, 8: Servo 9, 9: Servo 10, 10: Servo 11, 11: Servo 12, 12: Servo 13, 13: Servo 14, 14: Servo 15, 15: Servo 16, 16: Servo 17, 17: Servo 18, 18: Servo 19, 19: Servo 20, 20: Servo 21, 21: Servo 22, 22: Servo 23, 23: Servo 24, 24: Servo 25, 25: Servo 26, 26: Servo 27, 27: Servo 28, 28: Servo 29, 29: Servo 30, 30: Servo 31, 31: Servo 32
+    // @Bitmask: 0:舵机1, 1:舵机2, 2:舵机3, 3:舵机4, 4:舵机5, 5:舵机6, 6:舵机7, 7:舵机8, 8:舵机9, 9:舵机10, 10:舵机11, 11:舵机12, 12:舵机13, 13:舵机14, 14:舵机15, 15:舵机16, 16:舵机17, 17:舵机18, 18:舵机19, 19:舵机20, 20:舵机21, 21:舵机22, 22:舵机23, 23:舵机24, 24:舵机25, 25:舵机26, 26:舵机27, 27:舵机28, 28:舵机29, 29:舵机30, 30:舵机31, 31:舵机32
      AP_GROUPINFO("ONESHOT_MASK", 32, ParametersG2, oneshot_mask, 0),
 
 #if AP_SCRIPTING_ENABLED && AP_FOLLOW_ENABLED
@@ -1225,9 +1225,9 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 #endif
 
     // @Param: AUTOTUNE_AXES
-    // @DisplayName: Autotune axis bitmask
-    // @Description: 1-byte bitmap of axes to autotune
-    // @Bitmask: 0:Roll,1:Pitch,2:Yaw
+    // @DisplayName: 自动调参轴掩码
+    // @Description: 1 字节的自动调参轴位图
+    // @Bitmask: 0:横滚,1:俯仰,2:偏航
     // @User: Standard
     AP_GROUPINFO("AUTOTUNE_AXES", 34, ParametersG2, axis_bitmask, 7),
 
@@ -1239,16 +1239,16 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 
 #if AP_RANGEFINDER_ENABLED
     // @Param: RNGFND_LND_ORNT
-    // @DisplayName: rangefinder landing orientation
-    // @Description: The orientation of rangefinder to use for landing detection. Should be set to Down for normal downward facing rangefinder and Back for rearward facing rangefinder for quadplane tailsitters. Custom orientation can be used with Custom1 or Custom2. The orientation must match at least one of the available rangefinders.
-    // @Values: 4:Back, 25:Down, 101:Custom1, 102:Custom2
+    // @DisplayName: 测距仪降落朝向
+    // @Description: 降落检测所用测距仪朝向。正常下视测距仪应设为 Down，QuadPlane 尾座式的后视测距仪设为 Back。可用 Custom1/Custom2 自定义朝向，需与至少一个可用测距仪朝向匹配。
+    // @Values: 4:后向, 25:向下, 101:自定义1, 102:自定义2
     // @User: Standard
     AP_GROUPINFO("RNGFND_LND_ORNT", 36, ParametersG2, rangefinder_land_orient, ROTATION_PITCH_270),
 #endif
 
     // @Param: FWD_BAT_THR_CUT
-    // @DisplayName: Forward throttle cutoff battery voltage
-    // @Description: The estimated battery resting voltage below which the throttle is cut in auto-throttle modes. Measured on the battery used for forward throttle compensation (FWD_BAT_IDX). If set to zero, the throttle will not be cut due to low voltage, allowing the motor(s) to continue running until the battery is depleted. This should be set to the minimum operating voltage of you motor(s) or to a voltage level where minimal thrust is produced, to conserve the remaining battery power for the electronics and actuators.
+    // @DisplayName: 前向油门电压切断阈值
+    // @Description: 自动油门模式下，电池静置电压低于该值时切断油门（使用 FWD_BAT_IDX 对应电池）。设为 0 表示不因低电压切断油门，电机会持续运行直至电池耗尽。应设置为电机最低工作电压或仅产生最小推力的电压，以保留电池供电给电子设备与执行机构。
     // @Range: 0 35
     // @Units: V
     // @Increment: 0.1
@@ -1262,8 +1262,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 #endif
     
     // @Param: CLIMB_SLOPE_HGT
-    // @DisplayName: Climb slope minimum height
-    // @Description: Sets the minimum height above home at which the aircraft will apply a climb slope between waypoints. Below it, the aircraft will ascend immediately, and will only resume the requested trajectory upon reaching this height. This prevents unsafe behavior such as attempting to slowly gain altitude near obstacles. The default value ensures safe operations in most environments, but it can be adjusted based on specific terrain or operational needs.
+    // @DisplayName: 爬升坡度最小高度
+    // @Description: 设置在航点间应用爬升坡度的最小相对 Home 高度。低于该高度时飞机会立即爬升，达到该高度后才恢复按轨迹飞行，以避免靠近障碍物时缓慢爬升的不安全行为。默认值适合大多数环境，可根据地形或任务需要调整。
     // @Units: m
     // @Range: 0 50
     // @Increment: 1
@@ -1271,8 +1271,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("CLIMB_SLOPE_HGT", 39, ParametersG2, waypoint_climb_slope_height_min, 25),
 
     // @Param: GUIDED_TIMEOUT
-    // @DisplayName: Timeout for external guided command.
-    // @Description: If external guided command was not received by this timeout, the vehicle will revert to regular GUIDED mode.
+    // @DisplayName: 外部引导命令超时
+    // @Description: 超时内未收到外部引导命令则回退为普通 GUIDED 模式。
     // @Units: s
     // @Range: 0 10
     // @Increment: 0.5
@@ -1295,17 +1295,12 @@ ParametersG2::ParametersG2(void) :
 }
 
 /*
-  This is a conversion table from old parameter values to new
-  parameter names. The startup code looks for saved values of the old
-  parameters and will copy them across to the new parameters if the
-  new parameter does not yet have a saved value. It then saves the new
-  value.
+  旧参数名到新参数名的转换表。启动时会查找旧参数值，
+  若新参数尚未保存，则复制旧值并保存新参数。
   
-  Note that this works even if the old parameter has been removed. It
-  relies on the old k_param index not being removed
+  即便旧参数已移除，该机制仍可工作，前提是旧 k_param 索引未被移除。
   
-  The second column below is the index in the var_info[] table for the
-  old object. This should be zero for top level parameters.
+  下表第二列为旧对象在 var_info[] 中的索引。顶层参数应为 0。
  */
 static const AP_Param::ConversionInfo conversion_table[] = {
     { Parameters::k_param_fence_minalt,       0,     AP_PARAM_INT16, "FENCE_ALT_MIN"},
@@ -1317,8 +1312,8 @@ static const AP_Param::ConversionInfo conversion_table[] = {
 
 struct RCConversionInfo {
     uint16_t old_key; // k_param_*
-    uint32_t old_group_element; // index in old object
-    RC_Channel::AUX_FUNC fun; // new function
+    uint32_t old_group_element; // 旧对象中的索引
+    RC_Channel::AUX_FUNC fun; // 新功能
 };
 
 static const RCConversionInfo rc_option_conversion[] = {
@@ -1343,7 +1338,7 @@ void Plane::load_parameters(void)
 
     AP_Param::convert_old_parameters(&conversion_table[0], ARRAY_SIZE(conversion_table));
 
-    // setup defaults in SRV_Channels
+    // 设置 SRV_Channels 默认值
     g2.servo_channels.set_default_function(CH_1, SRV_Channel::k_aileron);
     g2.servo_channels.set_default_function(CH_2, SRV_Channel::k_elevator);
     g2.servo_channels.set_default_function(CH_3, SRV_Channel::k_throttle);
@@ -1353,21 +1348,21 @@ void Plane::load_parameters(void)
 
 #if HAL_QUADPLANE_ENABLED
     if (quadplane.enable) {
-        // quadplanes needs a higher loop rate
+        // QuadPlane 需要更高的循环频率
         AP_Param::set_default_by_name("SCHED_LOOP_RATE", 300);
     }
 #endif
 
     AP_Param::set_frame_type_flags(AP_PARAM_FRAME_PLANE);
 
-    // Convert chan params to RCx_OPTION
+    // 将通道参数转换为 RCx_OPTION
     for (uint8_t i=0; i<ARRAY_SIZE(rc_option_conversion); i++) {
         AP_Int8 chan_param;
         AP_Param::ConversionInfo info {rc_option_conversion[i].old_key, rc_option_conversion[i].old_group_element, AP_PARAM_INT8, nullptr};
         if (AP_Param::find_old_parameter(&info, &chan_param) && chan_param.get() > 0) {
             RC_Channel *chan = rc().channel(chan_param.get() - 1);
             if (chan != nullptr && !chan->option.configured()) {
-                chan->option.set_and_save((int16_t)rc_option_conversion[i].fun); // save the new param
+                chan->option.set_and_save((int16_t)rc_option_conversion[i].fun); // 保存新参数
             }
         }
     }
@@ -1378,8 +1373,7 @@ void Plane::load_parameters(void)
     enum ap_var_type ptype_fence_type;
     AP_Int8 *fence_type_new = (AP_Int8*)AP_Param::find("FENCE_TYPE", &ptype_fence_type);
     if (fence_type_new && !fence_type_new->configured()) {
-        // If we find the new parameter and it hasn't been configured
-        // attempt to upgrade the altitude fences.
+        // 找到新参数且未配置时，尝试升级高度围栏
         int8_t fence_type_new_val = AC_FENCE_TYPE_POLYGON;
         AP_Int16 fence_alt_min_old;
         AP_Param::ConversionInfo fence_alt_min_info_old = {
@@ -1441,20 +1435,20 @@ void Plane::load_parameters(void)
             }
             fence_action_new->set_and_save((int8_t)fence_action_new_val);
             
-            // Now upgrade the new fence enable at the same time
+            // 同时升级新的围栏启用参数
             enum ap_var_type ptype_fence_enable;
             AP_Int8 *fence_enable = (AP_Int8*)AP_Param::find("FENCE_ENABLE", &ptype_fence_enable);
-            // fences were used if there was a count, and the old fence action was not zero
+            // 若存在围栏数量且旧围栏动作不为 0，则认为使用过围栏
             AC_Fence *ap_fence = AP::fence();
             bool fences_exist = false;
             if (ap_fence) {
-                // If the fence library is present, attempt to read the fence count
+                // 若围栏库存在，尝试读取围栏数量
                 fences_exist = ap_fence->polyfence().total_fence_count() > 0;
             }
             
             bool fences_used = fence_action_old.get() != 0;
             if (fence_enable && !fence_enable->configured()) {
-                // The fence enable parameter exists, so now set it accordingly
+                // 围栏启用参数存在，按情况设置
                 fence_enable->set_and_save(fences_exist && fences_used);
             }
         }
@@ -1471,7 +1465,7 @@ void Plane::load_parameters(void)
     // PARAMETER_CONVERSION - Added: Jan-2022
     {
         const uint16_t old_key = g.k_param_airspeed;
-        const uint16_t old_index = 0;       // Old parameter index in the tree
+        const uint16_t old_index = 0;       // 旧参数在树中的索引
         AP_Param::convert_class(old_key, &airspeed, airspeed.var_info, old_index, true);
     }
 #endif
@@ -1479,7 +1473,7 @@ void Plane::load_parameters(void)
 #if AP_INERTIALSENSOR_HARMONICNOTCH_ENABLED
 #if HAL_INS_NUM_HARMONIC_NOTCH_FILTERS > 1
     if (!ins.harmonic_notches[1].params.enabled()) {
-        // notch filter parameter conversions (moved to INS_HNTC2) for 4.2.x, converted from fixed notch
+        // 固定陷波滤波器参数转换（移到 INS_HNTC2），适用于 4.2.x
         const AP_Param::ConversionInfo notchfilt_conversion_info[] {
             { Parameters::k_param_ins, 101, AP_PARAM_INT8,  "INS_HNTC2_ENABLE" },
             { Parameters::k_param_ins, 293, AP_PARAM_FLOAT, "INS_HNTC2_ATT" },
@@ -1504,7 +1498,7 @@ void Plane::load_parameters(void)
 #endif
 
     // PARAMETER_CONVERSION - Added: Dec 2023
-    // Convert _CM (centimeter) parameters to meters and _CD (centidegrees) parameters to meters
+    // 将 _CM（厘米）参数转换为米，将 _CD（0.01 度）参数转换为米
     g.pitch_trim.convert_centi_parameter(AP_PARAM_INT16);
     aparm.airspeed_cruise.convert_centi_parameter(AP_PARAM_INT32);
     aparm.min_groundspeed.convert_centi_parameter(AP_PARAM_INT32);
