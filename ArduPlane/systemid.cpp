@@ -6,67 +6,67 @@
 #include "Plane.h"
 
 /*
-  handle systemid via an auxiliary switch
+  通过辅助开关控制系统辨识
  */
 
 const AP_Param::GroupInfo AP_SystemID::var_info[] = {
 
     // @Param: _AXIS
-    // @DisplayName: System identification axis
-    // @Description: Controls which axis are being excited.  Set to non-zero to see more parameters
+    // @DisplayName: 系统辨识轴
+    // @Description: 控制被激励的轴，设为非零以显示更多参数
     // @User: Standard
     // @Values: 0:None, 1:VTOL Input Roll Angle, 2:VTOL Input Pitch Angle, 3:VTOL Input Yaw Angle, 4:VTOL Recovery Roll Angle, 5:VTOL Recovery Pitch Angle, 6:VTOL Recovery Yaw Angle, 7:VTOL Rate Roll, 8:VTOL Rate Pitch, 9:VTOL Rate Yaw, 10:VTOL Mixer Roll, 11:VTOL Mixer Pitch, 12:VTOL Mixer Yaw, 13:VTOL Mixer Thrust, 20:FW Input Roll Angle, 21:FW Input Pitch Angle, 22:FW Mixer Roll, 23:FW Mixer Pitch
     AP_GROUPINFO_FLAGS("_AXIS", 1, AP_SystemID, axis, 0, AP_PARAM_FLAG_ENABLE),
 
     // @Param: _MAGNITUDE
-    // @DisplayName: System identification Chirp Magnitude
-    // @Description: Magnitude of sweep in deg, deg/s and 0-1 for mixer outputs.
+    // @DisplayName: 系统辨识 Chirp 幅值
+    // @Description: 扫频幅值，角度/角速度单位为度/度每秒，混控输出范围 0-1。
     // @User: Standard
     AP_GROUPINFO("_MAGNITUDE", 2, AP_SystemID, waveform_magnitude, 5),
 
     // @Param: _F_START_HZ
-    // @DisplayName: System identification Start Frequency
-    // @Description: Frequency at the start of the sweep
+    // @DisplayName: 系统辨识起始频率
+    // @Description: 扫频起始频率
     // @Range: 0.01 100
     // @Units: Hz
     // @User: Standard
     AP_GROUPINFO("_F_START_HZ", 3, AP_SystemID, frequency_start, 0.5f),
 
     // @Param: _F_STOP_HZ
-    // @DisplayName: System identification Stop Frequency
-    // @Description: Frequency at the end of the sweep
+    // @DisplayName: 系统辨识终止频率
+    // @Description: 扫频结束频率
     // @Range: 0.01 100
     // @Units: Hz
     // @User: Standard
     AP_GROUPINFO("_F_STOP_HZ", 4, AP_SystemID, frequency_stop, 15),
 
     // @Param: _T_FADE_IN
-    // @DisplayName: System identification Fade in time
-    // @Description: Time to reach maximum amplitude of sweep
+    // @DisplayName: 系统辨识淡入时间
+    // @Description: 扫频达到最大幅值所需时间
     // @Range: 0 20
     // @Units: s
     // @User: Standard
     AP_GROUPINFO("_T_FADE_IN", 5, AP_SystemID, time_fade_in, 5),
 
     // @Param: _T_REC
-    // @DisplayName: System identification Total Sweep length
-    // @Description: Time taken to complete the sweep
+    // @DisplayName: 系统辨识扫频总时长
+    // @Description: 完成扫频所需时间
     // @Range: 0 255
     // @Units: s
     // @User: Standard
     AP_GROUPINFO("_T_REC", 6, AP_SystemID, time_record, 70),
 
     // @Param: _T_FADE_OUT
-    // @DisplayName: System identification Fade out time
-    // @Description: Time to reach zero amplitude at the end of the sweep
+    // @DisplayName: 系统辨识淡出时间
+    // @Description: 扫频结束后降至零幅值所需时间
     // @Range: 0 5
     // @Units: s
     // @User: Standard
     AP_GROUPINFO("_T_FADE_OUT", 7, AP_SystemID, time_fade_out, 1),
 
     // @Param: _XY_CTRL_MUL
-    // @DisplayName: System identification XY control multiplier
-    // @Description: A multiplier for the XY velocity and position controller when using systemID in VTOL modes that do horizontal position and velocity control
+    // @DisplayName: 系统辨识 XY 控制倍数
+    // @Description: VTOL 模式下使用系统辨识时，对 XY 速度/位置控制器的倍率
     // @Range: 0.05 1.0
     // @User: Standard
     AP_GROUPINFO("_XY_CTRL_MUL", 8, AP_SystemID, xy_control_mul, 0.1),
@@ -80,19 +80,19 @@ AP_SystemID::AP_SystemID(void)
 }
 
 // @LoggerMessage: SIDS
-// @Description: System ID settings
-// @Field: TimeUS: Time since system startup
-// @Field: Ax: The axis which is being excited
-// @Field: Mag: Magnitude of the chirp waveform
-// @Field: FSt: Frequency at the start of chirp
-// @Field: FSp: Frequency at the end of chirp
-// @Field: TFin: Time to reach maximum amplitude of chirp
-// @Field: TC: Time at constant frequency before chirp starts
-// @Field: TR: Time taken to complete chirp waveform
-// @Field: TFout: Time to reach zero amplitude after chirp finishes
+// @Description: 系统辨识设置
+// @Field: TimeUS: 系统启动以来的时间
+// @Field: Ax: 被激励的轴
+// @Field: Mag: Chirp 波形幅值
+// @Field: FSt: Chirp 起始频率
+// @Field: FSp: Chirp 结束频率
+// @Field: TFin: Chirp 达到最大幅值所需时间
+// @Field: TC: Chirp 开始前的恒定频率时间
+// @Field: TR: 完成 Chirp 波形所需时间
+// @Field: TFout: Chirp 结束后降至零幅值所需时间
 
 /*
-  start systemid
+  启动系统辨识
  */
 void AP_SystemID::start()
 {
@@ -100,7 +100,7 @@ void AP_SystemID::start()
 
     switch (start_axis) {
         case AxisType::NONE:
-            // check if enabled
+            // 检查是否启用
             gcs().send_text(MAV_SEVERITY_WARNING, "SystemID: No axis selected");
             return;
         case AxisType::INPUT_ROLL:
@@ -116,7 +116,7 @@ void AP_SystemID::start()
         case AxisType::MIX_PITCH:
         case AxisType::MIX_YAW:
         case AxisType::MIX_THROTTLE:
-            // Exits if the current flight mode or phase does not support system ID axis.
+            // 当前飞行模式或阶段不支持系统辨识轴则退出
             if (!plane.control_mode->supports_vtol_systemid()) {
 #if HAL_QUADPLANE_ENABLED
                 gcs().send_text(MAV_SEVERITY_WARNING, "SystemID: Axis not supported for this flight mode");
@@ -130,7 +130,7 @@ void AP_SystemID::start()
         case AxisType::FW_INPUT_PITCH:
         case AxisType::FW_MIX_ROLL:
         case AxisType::FW_MIX_PITCH:
-            // Exits if the currently flight mode or phase does not support system ID axis.
+            // 当前飞行模式或阶段不支持系统辨识轴则退出
             if (!plane.control_mode->supports_fw_systemid()) {
                 gcs().send_text(MAV_SEVERITY_WARNING, "SystemID: Axis not supported for this flight mode");
                 return;
@@ -157,7 +157,7 @@ void AP_SystemID::start()
 #endif
 
     waveform_time = 0;
-    time_const_freq = 2.0 / frequency_start; // Two full cycles at the starting frequency
+    time_const_freq = 2.0 / frequency_start; // 起始频率下的两个完整周期
 
     chirp_input.init(time_record, frequency_start, frequency_stop, time_fade_in, time_fade_out, time_const_freq);
 
@@ -181,7 +181,7 @@ void AP_SystemID::start()
 }
 
 /*
-  stop systemid
+  停止系统辨识
  */
 void AP_SystemID::stop()
 {
@@ -199,7 +199,7 @@ void AP_SystemID::stop()
             attitude_control->rate_bf_yaw_sysid_rads(0);
             plane.quadplane.pos_control->NE_set_control_scale_factor(1);
 
-            // re-initialise the XY controller so we take current position as target
+            // 重新初始化 XY 控制器，使当前位置作为目标
             plane.quadplane.pos_control->NE_init_controller();
         }
 #endif
@@ -208,7 +208,7 @@ void AP_SystemID::stop()
 }
 
 /*
-  update systemid - needs to be called at main loop rate
+  更新系统辨识（需要主循环频率调用）
  */
 void AP_SystemID::vtol_update()
 {
@@ -231,7 +231,7 @@ void AP_SystemID::vtol_update()
 
     switch (start_axis) {
         case AxisType::NONE:
-            // not possible, see start()
+            // 不可能发生，见 start()
             break;
         case AxisType::INPUT_ROLL:
             attitude_offset_deg.x = waveform_sample;
@@ -279,12 +279,12 @@ void AP_SystemID::vtol_update()
             break;
     }
 
-    // reduce control in NE axis when in position controlled modes
+    // 在位置控制模式下降低 NE 轴控制量
     plane.quadplane.pos_control->NE_set_control_scale_factor(xy_control_mul);
 
     if (log_subsample <= 0) {
         log_data();
-        // log attitude controller at the same rate
+        // 同频记录姿态控制器
         plane.quadplane.Log_Write_AttRate();
 
         if (plane.should_log(MASK_LOG_ATTITUDE_FAST) && plane.should_log(MASK_LOG_ATTITUDE_MED)) {
@@ -302,7 +302,7 @@ void AP_SystemID::vtol_update()
 #endif
 }
 
-// Return true if a fixed wing system ID is currently running
+// 当前是否在运行固定翼系统辨识
 bool AP_SystemID::is_running_fw() const
 {
     if (!is_running()) {
@@ -337,13 +337,12 @@ bool AP_SystemID::is_running_fw() const
 }
 
 /*
-  update systemid - needs to be called at main loop rate
+  更新系统辨识（需要主循环频率调用）
  */
 void AP_SystemID::fw_update()
 {
     if (!plane.control_mode->allow_fw_systemid() || chirp_input.completed()) {
-        // Control mode change means chirp should be stopped, or
-        // Chirp is complete
+        // 控制模式变化意味着需要停止 chirp，或 chirp 已完成
         stop();
         return;
     }
@@ -356,7 +355,7 @@ void AP_SystemID::fw_update()
 
     switch (start_axis) {
         case AxisType::NONE:
-            // not possible, see start()
+            // 不可能发生，见 start()
             break;
         case AxisType::FW_INPUT_ROLL:
             plane.nav_roll_cd += waveform_sample * 100.0f;
@@ -392,19 +391,19 @@ void AP_SystemID::fw_update()
 }
 
 // @LoggerMessage: SIDD
-// @Description: System ID data
-// @Field: TimeUS: Time since system startup
-// @Field: Time: Time reference for waveform
-// @Field: Targ: Current waveform sample
-// @Field: F: Instantaneous waveform frequency
-// @Field: Gx: Delta angle, X-Axis
-// @Field: Gy: Delta angle, Y-Axis
-// @Field: Gz: Delta angle, Z-Axis
-// @Field: Ax: Delta velocity, X-Axis
-// @Field: Ay: Delta velocity, Y-Axis
-// @Field: Az: Delta velocity, Z-Axis
+// @Description: 系统辨识数据
+// @Field: TimeUS: 系统启动以来的时间
+// @Field: Time: 波形时间参考
+// @Field: Targ: 当前波形采样值
+// @Field: F: 瞬时波形频率
+// @Field: Gx: 角度增量，X 轴
+// @Field: Gy: 角度增量，Y 轴
+// @Field: Gz: 角度增量，Z 轴
+// @Field: Ax: 速度增量，X 轴
+// @Field: Ay: 速度增量，Y 轴
+// @Field: Az: 速度增量，Z 轴
 
-// log system id
+// 记录系统辨识
 void AP_SystemID::log_data() const
 {
 #if HAL_LOGGING_ENABLED
@@ -434,19 +433,19 @@ void AP_SystemID::log_data() const
 }
 
 // @LoggerMessage: SIDP
-// @Description: System ID data for Plane
-// @Field: TimeUS: Time since system startup
-// @Field: DRll: Desired Roll Angle
-// @Field: Rll: Roll Angle
-// @Field: DPit: Desired Pitch Angle
-// @Field: Pit: Pitch Angle
-// @Field: rdes: Desired Roll Rate
-// @Field: r: Measured Roll Rate
-// @Field: pdes: Desired Pitch Rate
-// @Field: p: Measured Pitch Rate
-// @Field: Aile: Aileron
-// @Field: Elev: Elevator
-// @Field: aspd: Speed_Scalar
+// @Description: 固定翼系统辨识数据
+// @Field: TimeUS: 系统启动以来的时间
+// @Field: DRll: 期望横滚角
+// @Field: Rll: 横滚角
+// @Field: DPit: 期望俯仰角
+// @Field: Pit: 俯仰角
+// @Field: rdes: 期望横滚角速度
+// @Field: r: 实测横滚角速度
+// @Field: pdes: 期望俯仰角速度
+// @Field: p: 实测俯仰角速度
+// @Field: Aile: 副翼
+// @Field: Elev: 升降舵
+// @Field: aspd: 速度缩放
 // @Field: eastas: EAS2TAS
 
 void AP_SystemID::log_plane_data() const

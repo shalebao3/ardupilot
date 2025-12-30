@@ -22,7 +22,7 @@
 #pragma once
 
 ////////////////////////////////////////////////////////////////////////////////
-// Header includes
+// 头文件包含
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
@@ -34,14 +34,14 @@
 #include <AP_Airspeed/AP_Airspeed.h>
 #include <AP_Param/AP_Param.h>
 #include <StorageManager/StorageManager.h>
-#include <AP_Math/AP_Math.h>        // ArduPilot Mega Vector/Matrix math Library
-#include <AP_InertialSensor/AP_InertialSensor.h> // Inertial Sensor Library
-#include <AP_AccelCal/AP_AccelCal.h>                // interface and maths for accelerometer calibration
-#include <AP_AHRS/AP_AHRS.h>         // ArduPilot Mega DCM Library
+#include <AP_Math/AP_Math.h>        // ArduPilot Mega 向量/矩阵数学库
+#include <AP_InertialSensor/AP_InertialSensor.h> // 惯性传感器库
+#include <AP_AccelCal/AP_AccelCal.h>                // 加速度计校准接口与数学工具
+#include <AP_AHRS/AP_AHRS.h>         // ArduPilot Mega DCM 库
 #include <SRV_Channel/SRV_Channel.h>
-#include <AP_RangeFinder/AP_RangeFinder_config.h>     // Range finder library
-#include <Filter/Filter.h>                     // Filter library
-#include <AP_Camera/AP_Camera.h>          // Photo or video camera
+#include <AP_RangeFinder/AP_RangeFinder_config.h>     // 测距仪库
+#include <Filter/Filter.h>                     // 滤波库
+#include <AP_Camera/AP_Camera.h>          // 照相或视频相机
 #include <AP_Terrain/AP_Terrain.h>
 #include <AP_RPM/AP_RPM.h>
 #include <AP_Beacon/AP_Beacon.h>
@@ -49,25 +49,25 @@
 #include <AP_AdvancedFailsafe/AP_AdvancedFailsafe.h>
 #include <APM_Control/APM_Control.h>
 #include <APM_Control/AP_AutoTune.h>
-#include <GCS_MAVLink/GCS_MAVLink.h>    // MAVLink GCS definitions
-#include <AP_Mount/AP_Mount.h>           // Camera/Antenna mount
-#include <AP_Declination/AP_Declination.h> // ArduPilot Mega Declination Helper Library
+#include <GCS_MAVLink/GCS_MAVLink.h>    // MAVLink 地面站定义
+#include <AP_Mount/AP_Mount.h>           // 相机/天线云台
+#include <AP_Declination/AP_Declination.h> // ArduPilot Mega 磁偏角辅助库
 #include <AP_Logger/AP_Logger.h>
-#include <AP_Scheduler/AP_Scheduler.h>       // main loop scheduler
-#include <AP_Scheduler/PerfInfo.h>                  // loop perf monitoring
+#include <AP_Scheduler/AP_Scheduler.h>       // 主循环调度器
+#include <AP_Scheduler/PerfInfo.h>                  // 循环性能监控
 
 #include <AP_Navigation/AP_Navigation.h>
 #include <AP_L1_Control/AP_L1_Control.h>
-#include <AP_RCMapper/AP_RCMapper.h>        // RC input mapping library
+#include <AP_RCMapper/AP_RCMapper.h>        // RC 输入映射库
 
 #include <AP_Vehicle/AP_Vehicle.h>
 #include <AP_TECS/AP_TECS.h>
 #include <AP_NavEKF2/AP_NavEKF2.h>
 #include <AP_NavEKF3/AP_NavEKF3.h>
-#include <AP_Mission/AP_Mission.h>     // Mission command library
+#include <AP_Mission/AP_Mission.h>     // 任务指令库
 
 #include <AP_Soaring/AP_Soaring.h>
-#include <AP_BattMonitor/AP_BattMonitor.h> // Battery monitor library
+#include <AP_BattMonitor/AP_BattMonitor.h> // 电池监测库
 
 #include <AP_Arming/AP_Arming.h>
 #include <AP_Frsky_Telem/AP_Frsky_Telem.h>
@@ -75,13 +75,13 @@
 
 #include <AP_Rally/AP_Rally.h>
 
-#include <AP_OpticalFlow/AP_OpticalFlow.h>     // Optical Flow library
+#include <AP_OpticalFlow/AP_OpticalFlow.h>     // 光流库
 #include <AP_Parachute/AP_Parachute.h>
 #include <AP_ADSB/AP_ADSB.h>
-#include <AP_Avoidance/AP_Avoidance_config.h>      // "ADSB" avoidance library
+#include <AP_Avoidance/AP_Avoidance_config.h>      // “ADSB” 避障库
 #include <AP_ICEngine/AP_ICEngine.h>
 #include <AP_Landing/AP_Landing.h>
-#include <AP_LandingGear/AP_LandingGear.h>     // Landing Gear library
+#include <AP_LandingGear/AP_LandingGear.h>     // 起落架库
 #include <AP_Follow/AP_Follow.h>
 #include <AP_ExternalControl/AP_ExternalControl_config.h>
 #if AP_EXTERNAL_CONTROL_ENABLED
@@ -101,14 +101,14 @@
 #include "tuning.h"
 #endif
 
-// Configuration
+// 配置
 #include "config.h"
 
 #if AP_ADVANCEDFAILSAFE_ENABLED
 #include "afs_plane.h"
 #endif
 
-// Local modules
+// 本地模块
 #include "defines.h"
 #include "mode.h"
 
@@ -116,7 +116,7 @@
 #include <AP_Scripting/AP_Scripting.h>
 #endif
 
-#include "RC_Channel_Plane.h"     // RC Channel Library
+#include "RC_Channel_Plane.h"     // RC 通道库
 #include "Parameters.h"
 #if AP_ADSB_AVOIDANCE_ENABLED
 #include "avoidance_adsb.h"
@@ -126,7 +126,7 @@
 #include "systemid.h"
 
 /*
-  main APM:Plane class
+  APM:Plane 主类
  */
 class Plane : public AP_Vehicle {
 public:
@@ -191,17 +191,17 @@ public:
 
 private:
 
-    // key aircraft parameters passed to multiple libraries
+    // 传递给多个库的关键飞行器参数
     AP_FixedWing aparm;
 
-    // Global parameters are all contained within the 'g' and 'g2' classes.
+    // 全局参数都包含在 g 与 g2 中
     Parameters g;
     ParametersG2 g2;
 
-    // mapping between input channels
+    // 输入通道映射
     RCMapper rcmap;
 
-    // primary input channels
+    // 主要输入通道
     RC_Channel *channel_roll;
     RC_Channel *channel_pitch;
     RC_Channel *channel_throttle;
@@ -209,11 +209,11 @@ private:
     RC_Channel *channel_flap;
     RC_Channel *channel_airbrake;
 
-    // scaled roll limit based on pitch
+    // 基于俯仰缩放的横滚限制
     int32_t roll_limit_cd;
     float pitch_limit_min;
 
-    // flight modes convenience array
+    // 飞行模式便捷数组
     AP_Int8 *flight_modes = &g.flight_mode1;
     const uint8_t num_flight_modes = 6;
 
@@ -221,7 +221,7 @@ private:
     AP_FixedWing::Rangefinder_State rangefinder_state;
 
     /*
-      orientation of rangefinder to use for landing
+      用于降落的测距仪朝向
      */
     Rotation rangefinder_orientation(void) const {
         return Rotation(g2.rangefinder_land_orient.get());
@@ -231,7 +231,7 @@ private:
 
 #if AP_MAVLINK_MAV_CMD_SET_HAGL_ENABLED
     struct {
-        // allow for external height above ground estimate
+        // 允许外部提供离地高度估计
         float hagl;
         uint32_t last_update_ms;
         uint32_t timeout_ms;
@@ -245,45 +245,44 @@ private:
     AP_TECS TECS_controller{ahrs, aparm, landing, MASK_LOG_TECS};
     AP_L1_Control L1_controller{ahrs, &TECS_controller};
 
-    // Attitude to servo controllers
+    // 姿态到舵机控制器
     AP_RollController rollController{aparm};
     AP_PitchController pitchController{aparm};
     AP_YawController yawController{aparm};
     AP_SteerController steerController{};
 
-    // Training mode
-    bool training_manual_roll;  // user has manual roll control
-    bool training_manual_pitch; // user has manual pitch control
+    // 训练模式
+    bool training_manual_roll;  // 用户拥有手动横滚控制
+    bool training_manual_pitch; // 用户拥有手动俯仰控制
 
-    // should throttle be pass-thru in guided?
+    // 引导模式下油门是否直通
     bool guided_throttle_passthru;
 
-    // are we doing calibration? This is used to allow heartbeat to
-    // external failsafe boards during baro and airspeed calibration
+    // 是否正在校准：用于在气压计与空速校准期间向外部失效保护板发送心跳
     bool in_calibration;
 
-    // are we currently in long failsafe but have postponed it in MODE TAKEOFF until min level alt is reached
+    // 是否处于长失效保护且在 TAKEOFF 模式下延后执行，直到到达最低平飞高度
     bool long_failsafe_pending;
 
-    // GCS selection
-    GCS_Plane _gcs; // avoid using this; use gcs()
+    // 地面站选择
+    GCS_Plane _gcs; // 避免直接使用；请使用 gcs()
     GCS_Plane &gcs() { return _gcs; }
 
-    // selected navigation controller
+    // 选择的导航控制器
     AP_Navigation *nav_controller = &L1_controller;
 
-    // Camera
+    // 相机
 #if AP_CAMERA_ENABLED
     AP_Camera camera{MASK_LOG_CAMERA};
 #endif
 
 #if AP_OPTICALFLOW_ENABLED
-    // Optical flow sensor
+    // 光流传感器
     AP_OpticalFlow optflow;
 #endif
 
 #if HAL_RALLY_ENABLED
-    // Rally Points
+    // 备降点
     AP_Rally rally;
 #endif
 
@@ -291,8 +290,7 @@ private:
     void precland_update(void);
 #endif
 
-    // returns a Location for a rally point or home; if
-    // HAL_RALLY_ENABLED is false, just home.
+    // 返回备降点或 Home 的位置；若 HAL_RALLY_ENABLED 为 false，则返回 Home
     Location calc_best_rally_or_home_location(const Location &current_loc, float rtl_home_alt_amsl_cm) const;
 
 #if OSD_ENABLED || OSD_PARAM_ENABLED
@@ -340,48 +338,47 @@ private:
     AP_Quicktune quicktune;
 #endif
     
-    // This is the state of the flight control system
-    // There are multiple states defined such as MANUAL, FBW-A, AUTO
+    // 飞控系统状态（如 MANUAL、FBW-A、AUTO 等）
     Mode *control_mode = &mode_initializing;
     Mode *previous_mode = &mode_initializing;
 
-    // time of last mode change
+    // 上一次模式切换时间
     uint32_t last_mode_change_ms;
 
-    // This is used to enable the inverted flight feature
+    // 用于启用倒飞功能
     bool inverted_flight;
 
-    // last time we ran roll/pitch stabilization
+    // 上次执行横滚/俯仰稳定的时间
     uint32_t last_stabilize_ms;
 
-    // Failsafe
+    // 失效保护
     struct {
-        // Used to track if the value on channel 3 (throttle) has fallen below the failsafe threshold
-        // RC receiver should be set up to output a low throttle value when signal is lost
+        // 跟踪通道 3（油门）是否低于失效保护阈值
+        // RC 接收机在丢信号时应输出低油门
         bool rc_failsafe;
 
-        // true if an adsb related failsafe has occurred
+        // ADS-B 相关失效保护触发标记
         bool adsb;
 
-        // saved flight mode
+        // 保存的飞行模式
         enum Mode::Number saved_mode_number;
 
-        // A tracking variable for type of failsafe active
-        // Used for failsafe based on loss of RC signal or GCS signal
+        // 跟踪当前失效保护类型
+        // 用于 RC 或 GCS 信号丢失的失效保护
         int16_t state;
 
-        // number of low throttle values
+        // 低油门次数计数
         uint8_t throttle_counter;
 
         uint32_t last_valid_rc_ms;
 
-        //keeps track of the last valid rc as it relates to the AFS system
-        //Does not count rc inputs as valid if the standard failsafe is on
+        // 记录与 AFS 相关的最后有效 RC 时间
+        // 标准失效保护触发时不计为有效 RC 输入
         uint32_t AFS_last_valid_rc_ms;
     } failsafe;
 
 #if HAL_QUADPLANE_ENABLED
-    // Landing
+    // 降落
     class VTOLApproach {
     public:
         enum class Stage {
@@ -402,40 +399,38 @@ private:
         return failsafe.state != FAILSAFE_NONE || battery.has_failsafed() || failsafe.adsb;
     }
 
-    // A counter used to count down valid gps fixes to allow the gps estimate to settle
-    // before recording our home position (and executing a ground start if we booted with an air start)
+    // 计数器：等待 GPS 解算稳定后再记录 Home（以及在空中启动时执行地面启动）
     uint8_t ground_start_count = 5;
 
-    // true if we have a position estimate from AHRS
+    // 是否已有 AHRS 位置估计
     bool have_position;
 
-    // Airspeed
-    // The calculated airspeed to use in FBW-B.  Also used in higher modes for insuring min ground speed is met.
-    // Also used for flap deployment criteria.  Centimeters per second.
+    // 空速
+    // FBW-B 使用的计算空速；也用于高阶模式保证最小地速
+    // 亦用于襟翼放下判据，单位：cm/s
     int32_t target_airspeed_cm;
-    int32_t new_airspeed_cm = -1;  //temp variable for AUTO and GUIDED mode speed changes
+    int32_t new_airspeed_cm = -1;  // AUTO/GUIDED 模式变速的临时变量
 
-    // The difference between current and desired airspeed.  Used in the pitch controller.  Meters per second.
+    // 当前与目标空速差，用于俯仰控制器，单位：m/s
     float airspeed_error;
 
-    // An amount that the airspeed should be increased in auto modes based on the user positioning the
-    // throttle stick in the top half of the range.  Centimeters per second.
+    // AUTO 模式下基于油门杆上半段增加空速的幅度，单位：cm/s
     int16_t airspeed_nudge_cm;
 
-    // Similar to airspeed_nudge, but used when no airspeed sensor.
-    // 0-(throttle_max - throttle_cruise) : throttle nudge in Auto mode using top 1/2 of throttle stick travel
+    // 类似 airspeed_nudge，但在无空速传感器时使用
+    // 0-(throttle_max - throttle_cruise)：AUTO 模式下油门杆上半段的油门微调
     int16_t throttle_nudge;
 
-    // Ground speed
-    // The amount current ground speed is below min ground speed.  Centimeters per second
+    // 地速
+    // 当前地速低于最小地速的幅度，单位：cm/s
     int32_t groundspeed_undershoot;
     bool groundspeed_undershoot_is_valid;
     float last_groundspeed_undershoot_offset;
 
-    // speed scaler for control surfaces, updated at 10Hz
+    // 舵面速度缩放因子，10Hz 更新
     float surface_speed_scaler = 1.0;
 
-    // Battery Sensors
+    // 电池传感器
     AP_BattMonitor battery{MASK_LOG_CURRENT,
                            FUNCTOR_BIND_MEMBER(&Plane::handle_battery_failsafe, void, const char*, const int8_t),
                            _failsafe_priorities};
@@ -454,113 +449,110 @@ private:
         float throttle_lim_min;
         uint32_t throttle_max_timer_ms;
         uint32_t level_off_start_time_ms;
-        // Good candidate for keeping the initial time for TKOFF_THR_MAX_T.
+        // 适合作为记录 TKOFF_THR_MAX_T 初始时间的候选
 #if MODE_AUTOLAND_ENABLED
        struct {
-            float heading; // deg
+            float heading; // 度
             bool initialized;
         } initial_direction;
 #endif
     } takeoff_state;
 
-    // ground steering controller state
+    // 地面转向控制器状态
     struct {
-        // Direction held during phases of takeoff and landing centidegrees
-        // A value of -1 indicates the course has not been set/is not in use
-        // this is a 0..36000 value, or -1 for disabled
+        // 起飞与降落阶段保持的方向（百分之一度）
+        // -1 表示航向未设置/未使用
+        // 取值 0..36000，-1 表示禁用
         int32_t hold_course_cd = -1;
 
-        // locked_course and locked_course_cd are used in stabilize mode
-        // when ground steering is active, and for steering in auto-takeoff
+        // locked_course 与 locked_course_cd 用于自稳模式地面转向
+        // 以及自动起飞时的转向
         bool locked_course;
         float locked_course_err;
         uint32_t last_steer_ms;
     } steer_state;
 
-    // flight mode specific
+    // 飞行模式相关
     struct {
-        // Altitude threshold to complete a takeoff command in autonomous
-        // modes.  Centimeters above home
+        // 自动模式中完成起飞指令的高度阈值（相对 Home，cm）
         int32_t takeoff_altitude_rel_cm;
 
-        // Begin leveling out the enforced takeoff pitch angle min at this height to reduce/eliminate overshoot
+        // 在该高度开始拉平起飞最小俯仰角，以减少/消除超调
         int32_t height_below_takeoff_to_level_off_cm;
 
-        // the highest airspeed we have reached since entering AUTO. Used
-        // to control ground takeoff
+        // 进入 AUTO 后达到的最大空速，用于控制地面起飞
         float highest_airspeed;
 
-        // turn angle for next leg of mission
+        // 任务下一航段的转弯角
         float next_turn_angle {90};
 
-        // filtered sink rate for landing
+        // 降落时的滤波下沉率
         float sink_rate;
 
-        // distance to next waypoint
+        // 距离下一个航点的距离
         float wp_distance;
 
-        // proportion to next waypoint
+        // 到下一航点的比例
         float wp_proportion;
 
-        // last time is_flying() returned true in milliseconds
+        // is_flying() 最近一次返回 true 的时间（ms）
         uint32_t last_flying_ms;
 
-        // time stamp of when we start flying while in auto mode in milliseconds
+        // AUTO 模式开始飞行的时间戳（ms）
         uint32_t started_flying_in_auto_ms;
 
-        // barometric altitude at start of takeoff
+        // 起飞时的气压高度
         float baro_takeoff_alt;
 
-        // initial pitch. Used to detect if nose is rising in a tail dragger
+        // 初始俯仰角，用于检测尾轮机型机头抬起
         int16_t initial_pitch_cd;
 
-        // Minimum pitch to hold during takeoff command execution.  Hundredths of a degree
+        // 执行起飞指令时保持的最小俯仰角（0.01 度）
         int16_t takeoff_pitch_cd;
 
-        // Flag for using gps ground course instead of INS yaw.  Set false when takeoff command in process.
+        // 使用 GPS 地航向替代 INS 航向的标志；起飞指令进行中置为 false
         bool takeoff_complete;
 
-        // are we headed to the land approach waypoint? Works for any nav type
+        // 是否正飞向降落进近航点（适用于任意导航类型）
         bool wp_is_land_approach;
 
-        // should we fly inverted?
+        // 是否倒飞
         bool inverted_flight;
 
-        // should we enable cross-tracking for the next waypoint?
+        // 下一航点是否启用横向偏差修正
         bool next_wp_crosstrack;
 
-        // should we use cross-tracking for this waypoint?
+        // 当前航点是否使用横向偏差修正
         bool crosstrack;
 
-        // in FBWA taildragger takeoff mode
+        // 是否处于 FBWA 尾轮机起飞模式
         bool fbwa_tdrag_takeoff_mode;
 
-        // have we checked for an auto-land?
+        // 是否已检查自动降落
         bool checked_for_autoland;
 
-        // Altitude threshold to complete a takeoff command in autonomous modes.  Centimeters
-        // are we in idle mode? used for balloon launch to stop servo
-        // movement until altitude is reached
+        // 自动模式完成起飞指令的高度阈值（cm）
+        // 是否处于 idle 模式：气球发射时用于在达到高度前禁止舵机动作
         bool idle_mode;
         
-        // are we in VTOL mode in AUTO?
+        // AUTO 模式下是否为 VTOL 模式
         bool vtol_mode;
 
-        // are we doing loiter mode as a VTOL?
+        // 是否以 VTOL 方式盘旋
         bool vtol_loiter;
 
-        // how much correction have we added for terrain data
+        // 地形数据补偿量
         float terrain_correction;
 
-        // last home altitude for detecting changes
+        // 用于检测变化的上次 Home 高度
         int32_t last_home_alt_cm;
 
-        // have we finished the takeoff ratation (when it applies)?
+        // 起飞转体是否完成（如适用）
         bool rotation_complete;
     } auto_state;
 
 #if AP_SCRIPTING_ENABLED
-    // support for scripting nav commands, with verify
+    // 支持脚本化导航指令及验证
     struct {
         bool enabled;
         uint16_t id;
@@ -576,32 +568,32 @@ private:
 #endif
 
     struct GuidedState {
-        // roll pitch yaw commanded from external controller in centidegrees
+        // 外部控制器指令的横滚/俯仰/偏航（0.01 度）
         Vector3l forced_rpy_cd;
-        // last time we heard from the external controller
+        // 最近一次收到外部控制器指令的时间
         Vector3l last_forced_rpy_ms;
 
-        // throttle  commanded from external controller in percent
+        // 外部控制器指令的油门百分比
         float forced_throttle;
         uint32_t last_forced_throttle_ms;
 
 #if AP_PLANE_OFFBOARD_GUIDED_SLEW_ENABLED
-        // airspeed adjustments
-        float target_airspeed_cm = -1;  // don't default to zero here, as zero is a valid speed.
+        // 空速调整
+        float target_airspeed_cm = -1;  // 不默认 0，0 也是有效速度
         float target_airspeed_accel;
         uint32_t target_airspeed_time_ms;
 
-        // altitude adjustments
+        // 高度调整
         Location target_location;
-        // target_location altitude is uses to hold some flag values:
+        // target_location 的高度字段用于保存一些标志值
         bool target_location_alt_is_minus_one() const;
 
         float target_alt_rate;
         uint32_t target_alt_time_ms = 0;
         uint8_t target_mav_frame = -1;
 
-        // heading track
-        float target_heading = -4; // don't default to zero or -1 here, as both are valid headings in radians
+        // 航向跟踪
+        float target_heading = -4; // 不要默认 0 或 -1，这两者在弧度里都是有效航向
         float target_heading_accel_limit;
         uint32_t target_heading_time_ms;
         guided_heading_type_t target_heading_type;
@@ -610,73 +602,70 @@ private:
     } guided_state;
 
 #if AP_LANDINGGEAR_ENABLED
-    // landing gear state
+    // 起落架状态
     struct {
         AP_FixedWing::FlightStage last_flight_stage;
     } gear;
 #endif
 
     struct {
-        // on hard landings, only check once after directly a landing so you
-        // don't trigger a crash when picking up the aircraft
+        // 硬着陆后只在着陆后立即检查一次，避免搬动机体时触发坠机检测
         bool checkedHardLanding;
 
-        // crash detection. True when we are crashed
+        // 坠机检测：为 true 表示已坠机
         bool is_crashed;
 
-        // impact detection flag. Expires after a few seconds via impact_timer_ms
+        // 撞击检测标志，通过 impact_timer_ms 在数秒后失效
         bool impact_detected;
 
-        // debounce timer
+        // 去抖计时器
         uint32_t debounce_timer_ms;
 
-        // delay time for debounce to count to
+        // 去抖计数延迟时间
         uint32_t debounce_time_total_ms;
 
-        // length of time impact_detected has been true. Times out after a few seconds. Used to clip isFlyingProbability
+        // impact_detected 为 true 的持续时间，数秒后超时，用于限制 isFlyingProbability
         uint32_t impact_timer_ms;
     } crash_state;
 
-    // this controls throttle suppression in auto modes
+    // 控制 AUTO 模式下的油门抑制
     bool throttle_suppressed;
 
 #if AP_BATTERY_WATT_MAX_ENABLED
-    // reduce throttle to eliminate battery over-current
+    // 降低油门以避免电池过流
     int8_t  throttle_watt_limit_max;
-    int8_t  throttle_watt_limit_min; // for reverse thrust
+    int8_t  throttle_watt_limit_min; // 用于反推
     uint32_t throttle_watt_limit_timer_ms;
 #endif
 
     AP_FixedWing::FlightStage flight_stage = AP_FixedWing::FlightStage::NORMAL;
 
-    // probability of aircraft is currently in flight. range from 0 to
-    // 1 where 1 is 100% sure we're in flight
+    // 当前处于飞行状态的概率，范围 0..1，1 表示 100% 确认在飞行
     float isFlyingProbability;
 
-    // previous value of is_flying()
+    // is_flying() 的上一次值
     bool previous_is_flying;
 
-    // time since started flying in any mode in milliseconds
+    // 进入飞行状态以来的时间（ms）
     uint32_t started_flying_ms;
 
-    // ground mode is true when disarmed and not flying
+    // 地面模式：未解锁且未飞行时为 true
     bool ground_mode;
 
-    // Navigation control variables
-    // The instantaneous desired bank angle.  Hundredths of a degree
+    // 导航控制变量
+    // 即时期望的横滚角（0.01 度）
     int32_t nav_roll_cd;
 
-    // The instantaneous desired pitch angle.  Hundredths of a degree
+    // 即时期望的俯仰角（0.01 度）
     int32_t nav_pitch_cd;
 
-    // the aerodynamic load factor. This is calculated from the demanded
-    // roll before the roll is clipped, using 1/cos(nav_roll)
+    // 气动载荷因子：在横滚限幅前由期望横滚计算，使用 1/cos(nav_roll)
     float aerodynamic_load_factor = 1.0f;
 
-    // a smoothed airspeed estimate, used for limiting roll angle
+    // 平滑后的空速估计，用于限制横滚角
     float smoothed_airspeed;
 
-    // Mission library
+    // 任务库
     AP_Mission mission{
             FUNCTOR_BIND_MEMBER(&Plane::start_command_callback, bool, const AP_Mission::Mission_Command &),
             FUNCTOR_BIND_MEMBER(&Plane::verify_command_callback, bool, const AP_Mission::Mission_Command &),
@@ -687,7 +676,7 @@ private:
     AP_Parachute parachute;
 #endif
 
-    // terrain handling
+    // 地形处理
 #if AP_TERRAIN_AVAILABLE
     AP_Terrain terrain;
 #endif
@@ -704,11 +693,11 @@ private:
 #endif  // HAL_ADSB_ENABLED
 
 #if AP_ADSB_AVOIDANCE_ENABLED
-    // avoidance of adsb enabled vehicles (normally manned vehicles)
+    // 避让启用 ADS-B 的载具（通常为有人机）
     AP_Avoidance_Plane avoidance_adsb{adsb};
 #endif  // AP_ADSB_AVOIDANCE_ENABLED
 
-    // Outback Challenge Failsafe Support
+    // Outback Challenge 失效保护支持
 #if AP_ADVANCEDFAILSAFE_ENABLED
     AP_AdvancedFailsafe_Plane afs;
 #endif
@@ -717,90 +706,87 @@ private:
       meta data to support counting the number of circles in a loiter
     */
     struct {
-        // previous target bearing, used to update sum_cd
+        // 上一次目标方位角，用于更新 sum_cd
         int32_t old_target_bearing_cd;
 
-        // Total desired rotation in a loiter.  Used for Loiter Turns commands.
+        // 盘旋所需的总转角，用于 Loiter Turns 指令
         int32_t total_cd;
 
-        // total angle completed in the loiter so far
+        // 盘旋已完成的总角度
         int32_t sum_cd;
 
-        // Direction for loiter. 1 for clockwise, -1 for counter-clockwise
+        // 盘旋方向：1 为顺时针，-1 为逆时针
         int8_t direction;
 
-        // when loitering and an altitude is involved, this flag is true when it has been reached at least once
+        // 盘旋涉及高度时，该标志在至少到达一次高度后为 true
         bool reached_target_alt;
 
-        // check for scenarios where updrafts can keep you from loitering down indefinitely.
+        // 检查上升气流导致无法持续下降盘旋的情形
         bool unable_to_achieve_target_alt;
 
-        // start time of the loiter.  Milliseconds.
+        // 盘旋开始时间（ms）
         uint32_t start_time_ms;
 
-        // altitude at start of loiter loop lap. Used to detect delta alt of each lap.
-        // only valid when sum_cd > 36000
+        // 盘旋一圈开始时的高度，用于检测每圈高度变化
+        // 仅在 sum_cd > 36000 时有效
         int32_t start_lap_alt_cm;
         int32_t next_sum_lap_cd;
 
-        // The amount of time we should stay in a loiter for the Loiter Time command.  Milliseconds.
+        // Loiter Time 指令要求的盘旋时间（ms）
         uint32_t time_max_ms;
 
-        // current value of loiter radius in metres used by the controller
+        // 控制器使用的当前盘旋半径（m）
         float radius;
     } loiter;
 
-    // Conditional command
-    // A value used in condition commands (eg delay, change alt, etc.)
-    // For example in a change altitude command, it is the altitude to change to.
+    // 条件指令
+    // 条件指令使用的值（如延时、改高度等）
+    // 例如变更高度指令中，该值为目标高度
     int32_t condition_value;
 
-    // A starting value used to check the status of a conditional command.
-    // For example in a delay command the condition_start records that start time for the delay
+    // 用于检查条件指令状态的起始值
+    // 例如延时指令中 condition_start 记录延时开始时间
     uint32_t condition_start;
 
-    // 3D Location vectors
-    // Location structure defined in AP_Common
+    // 3D 位置向量
+    // 位置结构在 AP_Common 中定义
     const Location &home = ahrs.get_home();
 
-    // The location of the previous waypoint.  Used for track following and altitude ramp calculations
+    // 上一个航点位置，用于轨迹跟随和高度坡度计算
     Location prev_WP_loc {};
 
-    // The plane's current location
+    // 飞机当前位置
     Location current_loc {};
 
-    // The location of the current/active waypoint.  Used for altitude ramp, track following and loiter calculations.
+    // 当前/激活航点位置，用于高度坡度、轨迹跟随与盘旋计算
     Location next_WP_loc {};
 
-    // Altitude control
+    // 高度控制
     struct {
-        // target altitude above sea level in cm. Used for barometric
-        // altitude navigation
+        // 目标海拔高度（cm），用于气压高度导航
         int32_t amsl_cm;
 
-        // Altitude difference between previous and current waypoint in
-        // centimeters. Used for altitude slope handling
+        // 上一航点与当前航点的高度差（cm），用于高度坡度处理
         int32_t offset_cm;
 
 #if AP_TERRAIN_AVAILABLE
-        // are we trying to follow terrain?
+        // 是否正在进行地形跟随
         bool terrain_following;
 
-        // are we waiting to load terrain data to init terrain following
+        // 是否在等待加载地形数据以初始化地形跟随
         bool terrain_following_pending;
 
-        // target altitude above terrain in cm, valid if terrain_following
-        // is set
+        // 目标地形相对高度（cm），terrain_following 为 true 时有效
         int32_t terrain_alt_cm;
 
-        // lookahead value for height error reporting
+        // 高度误差报告的前视量
         float lookahead;
 #endif
 
-        // last input for FBWB/CRUISE height control
+        // FBWB/CRUISE 高度控制的上次输入
         float last_elevator_input;
 
-        // last time we checked for pilot control of height
+        // 上次检查驾驶员高度控制的时间
         uint32_t last_elev_check_us;
     } target_altitude {};
 
@@ -815,20 +801,20 @@ private:
         bool done_climb;
     } rtl;
 
-    // last time home was updated while disarmed
+    // 未解锁时更新 Home 的上次时间
     uint32_t last_home_update_ms;
 
-    // Camera/Antenna mount tracking and stabilisation stuff
+    // 相机/天线云台跟踪与稳定
 #if HAL_MOUNT_ENABLED
     AP_Mount camera_mount;
 #endif
 
-    // Arming/Disarming management class
+    // 解锁/上锁管理类
     AP_Arming_Plane arming;
 
     AP_Param param_loader {var_info};
 
-    // external control library
+    // 外部控制库
 #if AP_EXTERNAL_CONTROL_ENABLED
     AP_ExternalControl_Plane external_control;
 #endif
@@ -837,24 +823,24 @@ private:
     static const AP_Param::Info var_info[];
 
 #if HAL_QUADPLANE_ENABLED
-    // support for quadcopter-plane
+    // QuadPlane 支持
     QuadPlane quadplane{ahrs};
 #endif
 
 #if AP_TUNING_ENABLED
-    // support for transmitter tuning
+    // 遥控器调参支持
     AP_Tuning_Plane tuning;
 #endif
 
     static const struct LogStructure log_structure[];
 
-    // rudder mixing gain for differential thrust (0 - 1)
+    // 差动推力的方向舵混控增益（0-1）
     float rudder_dt;
 
-    // soaring mode-change timer
+    // 滑翔模式切换计时器
     uint32_t soaring_mode_timer_ms;
 
-    // terrain disable for non AUTO modes, set with an RC Option switch
+    // 非 AUTO 模式的地形禁用（由 RC 选项开关设置）
     bool non_auto_terrain_disable;
     bool terrain_disabled();
 #if AP_TERRAIN_AVAILABLE
@@ -886,7 +872,7 @@ private:
     void update_quicktune(void);
 #endif
 
-    // Attitude.cpp
+    // Attitude.cpp（姿态）
     void adjust_nav_pitch_throttle(void);
     void update_load_factor(void);
     void apply_load_factor_roll_limits(void);
@@ -941,14 +927,14 @@ private:
 
 #if HAL_LOGGING_ENABLED
 
-    // methods for AP_Vehicle:
+    // AP_Vehicle 接口方法
     const AP_Int32 &get_log_bitmask() override { return g.log_bitmask; }
     const struct LogStructure *get_log_structures() const override {
         return log_structure;
     }
     uint8_t get_num_log_structures() const override;
 
-    // Log.cpp
+    // Log.cpp（日志）
     void Log_Write_FullRate(void);
     void Log_Write_Attitude(void);
     void Log_Write_Control_Tuning();
@@ -965,10 +951,10 @@ private:
 #endif
 #endif
 
-    // Parameters.cpp
+    // Parameters.cpp（参数）
     void load_parameters(void) override;
 
-    // commands_logic.cpp
+    // commands_logic.cpp（任务逻辑）
     void set_next_WP(const Location &loc);
     void do_RTL(int32_t alt);
     bool verify_takeoff();
@@ -1002,7 +988,7 @@ private:
     void do_vtol_land(const AP_Mission::Mission_Command& cmd);
     bool verify_nav_wp(const AP_Mission::Mission_Command& cmd);
 #if HAL_QUADPLANE_ENABLED
-    // vtol takeoff from AP_Vehicle for quadplane.
+    // QuadPlane 的 VTOL 起飞（来自 AP_Vehicle）
     bool start_takeoff(const float alt_m) override;
     bool verify_landing_vtol_approach(const AP_Mission::Mission_Command& cmd);
 #endif
@@ -1023,26 +1009,26 @@ private:
     bool in_auto_mission_id(uint16_t command) const;
 
 #if AP_SCRIPTING_ENABLED
-    // nav scripting support
+    // 导航脚本支持
     void do_nav_script_time(const AP_Mission::Mission_Command& cmd);
     bool verify_nav_script_time(const AP_Mission::Mission_Command& cmd);
 #endif
 
-    // commands.cpp
+    // commands.cpp（任务命令）
     void set_guided_WP(const Location &loc);
 
-    // update home position. Return true if update done
+    // 更新 Home 位置，成功更新返回 true
     bool update_home();
 
-    // update current_loc
+    // 更新 current_loc
     void update_current_loc(void);
 
-    // set home location and store it persistently:
+    // 设置并持久化 Home 位置
     bool set_home_persistently(const Location &loc) WARN_IF_UNUSED;
     bool set_home_to_current_location(bool lock) override WARN_IF_UNUSED;
     bool set_home(const Location& loc, bool lock) override WARN_IF_UNUSED;
 
-    // control_modes.cpp
+    // control_modes.cpp（模式控制）
     void autotune_start(void);
     void autotune_restore(void);
     void autotune_enable(bool enable);
@@ -1055,16 +1041,16 @@ private:
 
     bool autotuning;
 
-    // events.cpp
+    // events.cpp（事件）
     void rc_failsafe_short_on_event();
     void failsafe_long_on_event(enum failsafe_state fstype, ModeReason reason);
     void rc_failsafe_short_off_event();
     void failsafe_long_off_event(ModeReason reason);
     void handle_battery_failsafe(const char* type_str, const int8_t action);
-    bool failsafe_in_landing_sequence() const;  // returns true if the vehicle is in landing sequence.  Intended only for use in failsafe code.
+    bool failsafe_in_landing_sequence() const;  // 若处于降落序列则返回 true，仅用于失效保护代码
 
 #if AP_FENCE_ENABLED
-    // fence.cpp
+    // fence.cpp（围栏）
     void fence_check();
     void fence_checks_async() override;
     bool fence_stickmixing() const;
@@ -1072,7 +1058,7 @@ private:
     uint8_t orig_breaches;
 #endif
 
-    // Plane.cpp
+    // Plane.cpp（主流程）
     void disarm_if_autoland_complete();
     bool trigger_land_abort(const float climb_to_alt_m);
     void get_osd_roll_pitch_rad(float &roll, float &pitch) const override;
@@ -1102,7 +1088,7 @@ private:
     void set_flight_stage(AP_FixedWing::FlightStage fs);
     bool flight_option_enabled(FlightOptions flight_option) const;
 
-    // navigation.cpp
+    // navigation.cpp（导航）
     void loiter_angle_reset(void);
     void loiter_angle_update(void);
     void navigate();
@@ -1116,7 +1102,7 @@ private:
     void setup_turn_angle(void);
     bool reached_loiter_target(void);
 
-    // radio.cpp
+    // radio.cpp（遥控）
     void set_control_channels(void) override;
     void init_rc_in();
     void init_rc_out_main();
@@ -1129,11 +1115,11 @@ private:
     bool rc_failsafe_active(void) const;
 
 #if AP_RANGEFINDER_ENABLED
-    // sensors.cpp
+    // sensors.cpp（传感器）
     void read_rangefinder(void);
 #endif
 
-    // system.cpp
+    // system.cpp（系统）
     __INITFUNC__ void init_ardupilot() override;
     bool set_mode(Mode& new_mode, const ModeReason reason);
     bool set_mode(const uint8_t mode, const ModeReason reason) override;
@@ -1146,7 +1132,7 @@ private:
     void notify_mode(const Mode& mode);
     bool gcs_mode_enabled(const Mode::Number mode_num) const;
 
-    // takeoff.cpp
+    // takeoff.cpp（起飞）
     bool auto_takeoff_check(void);
     void takeoff_calc_roll(void);
     void takeoff_calc_pitch(void);
@@ -1157,10 +1143,10 @@ private:
     bool check_takeoff_timeout(void);
     bool check_takeoff_timeout_level_off(void);
 
-    // avoidance_adsb.cpp
+    // avoidance_adsb.cpp（ADSB 避障）
     void avoidance_adsb_update(void);
 
-    // servos.cpp
+    // servos.cpp（舵机）
     void set_servos();
     float apply_throttle_limits(float throttle_in);
     void set_throttle(void);
@@ -1182,33 +1168,33 @@ private:
     void flaperon_update();
     void indicate_waiting_for_rud_neutral_to_takeoff(void);
 
-    // is_flying.cpp
+    // is_flying.cpp（飞行状态）
     void update_is_flying_5Hz(void);
     void crash_detection_update(void);
     bool in_preLaunch_flight_stage(void);
     bool is_flying(void);
 
-    // parachute.cpp
+    // parachute.cpp（降落伞）
     void parachute_check();
 #if HAL_PARACHUTE_ENABLED
     void parachute_release();
     bool parachute_manual_release();
 #endif
 
-    // soaring.cpp
+    // soaring.cpp（滑翔）
 #if HAL_SOARING_ENABLED
     void update_soaring();
 #endif
 
-    // RC_Channel.cpp
+    // RC_Channel.cpp（RC 通道）
     bool emergency_landing;
 
-    // vehicle specific waypoint info helpers
+    // 机型相关的航点信息辅助函数
     bool get_wp_distance_m(float &distance) const override;
     bool get_wp_bearing_deg(float &bearing) const override;
     bool get_wp_crosstrack_error_m(float &xtrack_error) const override;
 
-    // reverse_thrust.cpp
+    // reverse_thrust.cpp（反推）
     bool reversed_throttle;
     bool have_reverse_throttle_rc_option;
     bool allow_reverse_thrust(void) const;
@@ -1218,13 +1204,13 @@ private:
     bool reverse_thrust_enabled(UseReverseThrust use_reverse_thrust_option) const;
 
 #if AP_SCRIPTING_ENABLED
-    // support for NAV_SCRIPT_TIME mission command
+    // 支持 NAV_SCRIPT_TIME 任务指令
     bool nav_scripting_active(void);
     bool nav_script_time(uint16_t &id, uint8_t &cmd, float &arg1, float &arg2, int16_t &arg3, int16_t &arg4) override;
     void nav_script_time_done(uint16_t id) override;
 
-    // command throttle percentage and roll, pitch, yaw target
-    // rates. For use with scripting controllers
+    // 下发油门百分比与横滚/俯仰/偏航角速度目标
+    // 用于脚本控制器
     void set_target_throttle_rate_rpy(float throttle_pct, float roll_rate_dps, float pitch_rate_dps, float yaw_rate_dps) override;
     void set_rudder_offset(float rudder_pct, bool run_yaw_rate_controller) override;
     bool nav_scripting_enable(uint8_t mode) override;
@@ -1245,7 +1231,7 @@ private:
         Failsafe_Action_AUTOLAND_OR_RTL = 7,
     };
 
-    // list of priorities, highest priority first
+    // 优先级列表，优先级由高到低
     static constexpr int8_t _failsafe_priorities[] = {
                                                       Failsafe_Action_Terminate,
                                                       Failsafe_Action_Parachute,
@@ -1255,13 +1241,13 @@ private:
                                                       Failsafe_Action_Land,
                                                       Failsafe_Action_RTL,
                                                       Failsafe_Action_None,
-                                                      -1 // the priority list must end with a sentinel of -1
+                                                      -1 // 优先级列表必须以 -1 结束
                                                      };
     static_assert(_failsafe_priorities[ARRAY_SIZE(_failsafe_priorities) - 1] == -1,
                   "_failsafe_priorities is missing the sentinel");
 
-    // EKF checks for loss of navigation performed in ekf_check.cpp
-    // These are specific to VTOL operation
+    // ekf_check.cpp 中的导航丢失 EKF 检查
+    // 这些检查针对 VTOL 操作
     void ekf_check();
     bool ekf_over_threshold();
     void failsafe_ekf_event();
@@ -1292,15 +1278,15 @@ private:
     FlareMode flare_mode;
     bool throttle_at_zero(void) const;
 
-    // expo handling
+    // expo 处理
     float roll_in_expo(bool use_dz) const;
     float pitch_in_expo(bool use_dz) const;
     float rudder_in_expo(bool use_dz) const;
 
-    // mode reason for entering previous mode
+    // 进入上一个模式的原因
     ModeReason previous_mode_reason = ModeReason::UNKNOWN;
 
-    // last target alt we passed to tecs
+    // 最近传给 TECS 的目标高度
     int32_t tecs_target_alt_cm;
 
 public:
@@ -1315,11 +1301,11 @@ public:
     bool update_target_location(const Location &old_loc, const Location &new_loc) override;
     bool set_velocity_match(const Vector2f &velocity) override;
 
-    // allow for landing descent rate to be overridden by a script, may be -ve to climb
+    // 允许脚本覆盖降落下沉率，允许为负以爬升
     bool set_land_descent_rate(float descent_rate) override;
 
-    // allow scripts to override mission/guided crosstrack behaviour
-    // It's up to the Lua script to ensure the provided location makes sense
+    // 允许脚本覆盖任务/引导的横向偏差行为
+    // 位置合理性由 Lua 脚本保证
     bool set_crosstrack_start(const Location &new_start_location) override;
 
 #endif // AP_SCRIPTING_ENABLED
